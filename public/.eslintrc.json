@@ -1,0 +1,19 @@
+{
+  "env": {
+    "es6": false,
+    "browser": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+      "ecmaVersion": 5,
+      "sourceType": "script"
+  },
+  "rules": {
+      "semi": "error",
+      "quotes": ["error", "single"],
+      "indent": ["error" , 2],
+      "no-console": ["error", { "allow": ["warn", "error"] }]
+  }
+}
