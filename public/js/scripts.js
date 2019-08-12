@@ -3,13 +3,13 @@
   var apiDocsRepository = (function () {
 
     var resMovie = {
-      'id': '0',
+      '_id': '0',
       'title': '...',
-      'year': '2010',
       'description': '...',
-      'genre': 'SciFi',
-      'director': '...',
+      'genre': '{ name:\'\', description:\'\' }',
+      'director': '{ name:\'\', bio:\'\', birthyear:\'\', Deathyear:\'\' }',
       'imageURL': '',
+      'actors': '[]',
       'featured': 'false'
     };
 
@@ -30,7 +30,7 @@
       'username': 'john',
       'password': '',
       'email': '...',
-      'birthday': '', 
+      'birth_date': '', 
       'favorites': []
     };
 
@@ -39,9 +39,9 @@
       'username': 'john',
       'password': '',
       'email': '...',
-      'birthday': '',
+      'birth_date': '',
       'favorites': [],
-      'id': '0'
+      '_id': '0'
     };
 
     var reqUsersPut = { 
@@ -59,7 +59,7 @@
       'email': '...',
       'birthday': '',
       'favorites': [],
-      'id': '0'
+      '_id': '0'
     };
 
     var resUsersFavorites = {
@@ -69,7 +69,7 @@
       'email': '...',
       'birthday': '',
       'favorites': ['1'],
-      'id': '0'
+      '_id': '0'
     };
 
     // this contains all of the apiDocs
