@@ -4,71 +4,71 @@
 
     var resMovie = {
       '_id': '0',
-      'title': '...',
-      'description': '...',
-      'genre': '{ name:\'\', description:\'\' }',
-      'director': '{ name:\'\', bio:\'\', birthyear:\'\', Deathyear:\'\' }',
-      'imageURL': '',
-      'actors': '[]',
-      'featured': 'false'
+      'Title': 'String',
+      'Description': 'String',
+      'Genre': '{ Name:\'String\', Description:\'String\' }',
+      'Director': '{ Name:\'String\', Bio:\'String\', Birthyear:\'Date\', Deathyear:\'Date\' }',
+      'Actors': '[ObjectID(ActorID)]',
+      'ImageURL': 'String',
+      'Featured': 'Boolean'
     };
 
     var resGenre = {
-      'name': 'SciFi',
-      'description': '...'
+      'Name': 'String',
+      'Description': 'String'
     };
 
     var resDirectors = {
-      'name': 'Christopher',
-      'bio': '',
-      'birthyear': '',
-      'deathyear': ''
+      'Name': 'String',
+      'Bio': 'String',
+      'Birthyear': 'Date',
+      'Deathyear': 'Date'
     };
 
     var reqUsersPost = { 
-      'name': 'John Doe',
-      'username': 'john',
-      'password': '',
-      'email': '...',
-      'birth_date': '', 
-      'favorites': []
+      'Name': 'String, required',
+      'Username': 'String, required',
+      'Password': 'String, required',
+      'Email': 'String, required',
+      'Birthday': 'Date', 
+      'FavoriteMovies': '[ObjectID(MovieID)]'
     };
 
     var resUsersPost = {
-      'name': 'John Doe',
-      'username': 'john',
-      'password': '',
-      'email': '...',
-      'birth_date': '',
-      'favorites': [],
+      'Name': 'String',
+      'Username': 'String',
+      'Password': 'String',
+      'Email': 'String',
+      'Birthday': 'Date', 
+      'FavoriteMovies': '[ObjectID(MovieID)]',
       '_id': '0'
     };
 
     var reqUsersPut = { 
-      'name': 'John Doe',
-      'username': 'john',
-      'password': '',
-      'email': '...',
-      'birthday': ''
+      'Name': 'String, required',
+      'Username': 'String, required',
+      'Password': 'String, required',
+      'Email': 'String, required',
+      'Birthday': 'Date'
     };
 
     var resUsersPut = {
-      'name': 'John Doe',
-      'username': 'john',
-      'password': '',
-      'email': '...',
-      'birthday': '',
-      'favorites': [],
+      'Name': 'String',
+      'Username': 'String',
+      'Password': 'String',
+      'Email': 'String',
+      'Birthday': 'Date', 
+      'FavoriteMovies': '[ObjectID(MovieID)]',
       '_id': '0'
     };
 
     var resUsersFavorites = {
-      'name': 'John Doe',
-      'username': 'john',
-      'password': '',
-      'email': '...',
-      'birthday': '',
-      'favorites': ['1'],
+      'Name': 'String',
+      'Username': 'String',
+      'Password': 'String',
+      'Email': 'String',
+      'Birthday': 'Date', 
+      'FavoriteMovies': '[Movies]',
       '_id': '0'
     };
 
@@ -77,74 +77,65 @@
       { 'group': 'Movies', 
         'url': '/movies', 
         'method': 'GET', 
-        'query': 'none', 
         'request': '', 
-        'response': '[ { ... }, ... ]',
+        'response': '[Movies]',
         'description': 'Return a list of ALL movies.'
       },
       { 'group': 'Movies', 
-        'url': '/movies/:title', 
+        'url': '/movies/:Title', 
         'method': 'GET', 
-        'query': 'none', 
         'request': '', 
         'response': JSON.stringify(resMovie).replace(/","/g,'",\n "'), 
-        'description': 'Return data (description, genre, director, image URL, whether it\'s featured or not) about a single movie by title to the use.'
+        'description': 'Return a single Movie by title to the user.'
       },      
       { 'group': 'Genres', 
-        'url': '/genres/:name', 
+        'url': '/genres/:Name', 
         'method': 'GET', 
-        'query': 'none', 
         'request': '', 
         'response': JSON.stringify(resGenre).replace(/","/g,'",\n "'), 
-        'description': 'Return data about a genre (description) by name (e.g., "Thriller").'
+        'description': 'Return a genre by Name (e.g., "Thriller").'
       },      
       { 'group': 'Directors', 
-        'url': '/directors/:name', 
+        'url': '/directors/:Name', 
         'method': 'GET', 
-        'query': 'none', 
         'request': '', 
         'response': JSON.stringify(resDirectors).replace(/","/g,'",\n "'), 
-        'description': 'Return data about a director (bio, birth year, death year) by name.'
+        'description': 'Return a Director by Name.'
       },      
       { 'group': 'Users', 
         'url': '/users', 
         'method': 'POST', 
-        'query': 'none', 
         'request': JSON.stringify(reqUsersPost).replace(/,"/g,',\n "'),  
         'response': JSON.stringify(resUsersPost).replace(/,"/g,',\n "'), 
         'description': 'Allow new users to register.'
       },
       { 'group': 'Users', 
-        'url': '/users/:id', 
+        'url': '/users/:Username', 
         'method': 'DELETE', 
-        'query': 'none', 
         'request': '', 
         'response': 'User John Doe with id 0 was deleted.', 
         'description': 'Allow existing users to deregister.'
       },
       { 'group': 'Users', 
-        'url': '/users/:id', 
+        'url': '/users/:Username', 
         'method': 'PUT', 
-        'query': 'none', 
         'request': JSON.stringify(reqUsersPut).replace(/,"/g,',\n "'),  
         'response': JSON.stringify(resUsersPut).replace(/,"/g,',\n "'), 
-        'description': 'Allow users to update their user info (username, password, email, date of birth).'
+        'description': 'Allow users to update their user info.'
       },
       { 'group': 'Favorites', 
-        'url': '/users/:id/:movie-id', 
+        'url': '/users/:Username/:MovieID', 
         'method': 'POST', 
-        'query': 'none', 
         'request': '',
         'response': JSON.stringify(resUsersFavorites).replace(/,"/g,',\n "'), 
-        'description': 'Allow users to add a movie to their list of favorites.'
+        'description': 'Allow users to add a Movie to their list of favorites.'
       },
       { 'group': 'Favorites', 
-        'url': '/users/:id/:movie-id', 
+        'url': '/users/:Username/:MovieID', 
         'method': 'DELETE', 
-        'query': 'none', 
         'request': '',
         'response': JSON.stringify(resUsersFavorites).replace(/,"/g,',\n "'), 
-        'description': 'Allow users to remove a movie from their list of favorites.'
+        'description': 'Allow users to remove a Movie from their list of favorites.'
       }
     ];
 
