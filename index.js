@@ -3,6 +3,9 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose');
 
+// Loads the values from the .env file into the application's process.env
+require('dotenv').config();
+
 const app = express();
 
 // Import routes

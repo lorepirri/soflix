@@ -1,3 +1,6 @@
+# avoid .env to be in the public repository
+.env
+
 # Logs
 logs
 *.log
