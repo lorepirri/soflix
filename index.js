@@ -9,6 +9,8 @@ const app = express();
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
+const genresRouter = require('./routes/genres');
+const directorsRouter = require('./routes/directors');
 
 // connect to mongodb
 // https://stackoverflow.com/questions/52572852/deprecationwarning-collection-findandmodify-is-deprecated-use-findoneandupdate
@@ -34,6 +36,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 // Add movies routes to middleware chain.
 app.use('/movies', moviesRouter);
+// Add genres routes to middleware chain.
+app.use('/genres', genresRouter);
+// Add directors routes to middleware chain.
+app.use('/directors', directorsRouter);
 
 
 // -- Genres --
