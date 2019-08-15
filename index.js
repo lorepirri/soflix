@@ -41,29 +41,19 @@ app.use('/genres', genresRouter);
 // Add directors routes to middleware chain.
 app.use('/directors', directorsRouter);
 
-
-// -- Genres --
-
-// // Get the data about a single Genre, by name
-// app.get('/genres/:name', (req, res) => {
-//   res.json(Genres.find( (genre) => { return genre.name === req.params.name; }));
-// });
-
-// // -- Directors --
-
-// // Get the data about a single Director, by name
-// app.get('/directors/:name', (req, res) => {
-//   res.json(Directors.find( (director) => { return director.name === req.params.name; }));
-// });
-
-
-
-
-app.use((err, req, res) => {
+// error handler
+app.use(function(err, req, res, next) {
   var logEntryTimestamp = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
   var logEntry = `${logEntryTimestamp} - Error: ${err.stack}`;
   console.error(logEntry);
-  res.status(500).send('Something broke!');
+  
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('Something broke!');
 });
 
 app.listen(8080, () => {

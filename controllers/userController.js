@@ -153,32 +153,3 @@ module.exports.user_remove_favorite_movie = (req, res) => {
       res.status(500).send(`Error: <${err}>.`);
     });
 };
-
-// app.post('/users/:id/:movie_id', (req, res) => {
-//   let user = Users.find((user) => { return user.id === req.params.id; });
-//   let movie = Movies.find((movie) => { return movie.id === req.params.movie_id; });
-
-//   if (user && movie) {
-//     user.favorites = [...new Set([...user.favorites, req.params.movie_id])];
-//     res.status(201).send(user);
-//   } else if (!movie) {
-//     res.status(404).send('Movie with id ' + req.params.movie_id + ' was not found.');
-//   } else {
-//     res.status(404).send('User with id ' + req.params.id + ' was not found.');
-//   }
-// });
-
-// // remove a favorite Movie from a User.
-// app.delete('/users/:id/:movie_id', (req, res) => {
-//   let user = Users.find((user) => { return user.id === req.params.id; });
-//   let movie = Movies.find((movie) => { return movie.id === req.params.movie_id; });
-
-//   if (user && movie) {
-//     user.favorites = user.favorites.filter((movie_id) => { return movie_id !== req.params.movie_id; });
-//     res.status(201).send(user);
-//   } else if (!movie) {
-//     res.status(404).send('Movie with id ' + req.params.movie_id + ' was not found.');
-//   } else {
-//     res.status(404).send('User with id ' + req.params.id + ' was not found.');
-//   }
-// });
