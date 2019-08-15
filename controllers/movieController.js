@@ -6,6 +6,8 @@ const Actors = require('../models/actors');
 module.exports.movies_list = function(req, res) {
   Movies.find()
     .populate('Actors')
+    .populate('Genre')
+    .populate('Director')
     .then( movies => {
       res.status(201).json(movies);
     })
@@ -20,6 +22,8 @@ module.exports.movie_get = function(req, res) {
   let { Title } = req.params;
   Movies.findOne({ Title: {$regex: `${Title}.*`, $options: 'i'} })
     .populate('Actors')
+    .populate('Genre')
+    .populate('Director')
     .then( movie => {
       if (movie) {
         res.json(movie);
