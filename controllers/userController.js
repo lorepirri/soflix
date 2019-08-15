@@ -33,6 +33,8 @@ module.exports.user_get = function(req, res) {
 // Adds data for a new user to the list of Users.
 /* We’ll expect JSON in this format
 {
+  Name: String,
+  (required)
   Username: String,
   (required)
   Password: String,
@@ -42,13 +44,14 @@ module.exports.user_get = function(req, res) {
   Birthday: Date
 }*/
 module.exports.user_create = (req, res) => {
-  let { Username, Password, Email, Birthday } = req.body;
+  let { Name, Username, Password, Email, Birthday } = req.body;
   Users.findOne({ Username })
     .then( user => {
       if (user) {
         return res.status(400).send(`User ${Username} already exists.`);
       } else {
         Users.create({
+          Name,
           Username,
           Password,
           Email,
@@ -70,6 +73,8 @@ module.exports.user_create = (req, res) => {
 // Update a user's info, by username
 /* We’ll expect JSON in this format
 {
+  Name: String,
+  (required)
   Username: String,
   (required)
   Password: String,
@@ -79,10 +84,11 @@ module.exports.user_create = (req, res) => {
   Birthday: Date
 }*/
 module.exports.user_update = (req, res) => {
-  let { Username, Password, Email, Birthday } = req.body;
+  let { Name, Username, Password, Email, Birthday } = req.body;
   Users.findOneAndUpdate(
     { Username: req.params.Username }, 
     { $set: {
+      Name,
       Username,
       Password,
       Email,
