@@ -9,8 +9,22 @@ require('dotenv').config();
 const passport = require('passport');
 require('./passport');
 
+const cors = require('cors');
+let allowedOrigins = ['http://localhost:8080'];
 
 const app = express();
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      // If a specific origin is not found on the list of allowed origins.
+      let message = `The CORS policy for this application does not allow access from origin: ${origin}`;
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 // Import routes
 const authRouter = require('./routes/auth');
