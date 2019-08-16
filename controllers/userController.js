@@ -132,7 +132,7 @@ module.exports.user_delete = (req, res) => {
 module.exports.user_add_favorite_movie = (req, res) => {
   let { Username, MovieID } = req.params;
   Users.findOneAndUpdate({ Username }, {
-    $push : { FavoriteMovies : MovieID }
+    $addToSet : { FavoriteMovies : MovieID }
   },
   { new : true }) // Pass the updated document to the callback
     .then( updatedUser => {
