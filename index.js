@@ -6,9 +6,14 @@ const express = require('express'),
 // Loads the values from the .env file into the application's process.env
 require('dotenv').config();
 
+const passport = require('passport');
+require('./passport');
+
+
 const app = express();
 
 // Import routes
+const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
@@ -30,19 +35,23 @@ app.use(express.static('public'));
 
 app.use(bodyParser.json());
 
+// // must be just right after bodyParser.json
+// var auth = require('./auth')(app);
+// Add index routes to middleware chain.
+app.use('/login', authRouter);
 
 // Routes //
 
 // Add index routes to middleware chain.
-app.use('/', indexRouter);
+app.use('/', passport.authenticate('jwt', { session: false }), indexRouter);
 // Add users routes to middleware chain.
-app.use('/users', usersRouter);
+app.use('/users', passport.authenticate('jwt', { session: false }), usersRouter);
 // Add movies routes to middleware chain.
-app.use('/movies', moviesRouter);
+app.use('/movies', passport.authenticate('jwt', { session: false }), moviesRouter);
 // Add genres routes to middleware chain.
-app.use('/genres', genresRouter);
+app.use('/genres', passport.authenticate('jwt', { session: false }), genresRouter);
 // Add directors routes to middleware chain.
-app.use('/directors', directorsRouter);
+app.use('/directors', passport.authenticate('jwt', { session: false }), directorsRouter);
 
 // error handler
 app.use(function(err, req, res, next) {
