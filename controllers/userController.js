@@ -45,6 +45,7 @@ module.exports.user_get = function(req, res) {
 }*/
 module.exports.user_create = (req, res) => {
   let { Name, Username, Password, Email, Birthday } = req.body;
+  let hashedPassword = Users.hashPassword(Password);
   Users.findOne({ Username })
     .then( user => {
       if (user) {
@@ -53,11 +54,11 @@ module.exports.user_create = (req, res) => {
         Users.create({
           Name,
           Username,
-          Password,
+          Password: hashedPassword,
           Email,
           Birthday
         })
-          .then( user => {res.status(201).json(user);})
+          .then( user => { res.status(201).json(user); })
           .catch( error => {
             console.error(error);
             res.status(500).send(`Error <${error}>.`);
@@ -85,12 +86,13 @@ module.exports.user_create = (req, res) => {
 }*/
 module.exports.user_update = (req, res) => {
   let { Name, Username, Password, Email, Birthday } = req.body;
+  let hashedPassword = Users.hashPassword(Password);
   Users.findOneAndUpdate(
-    { Username: req.params.Username }, 
+    { Username: req.params.Username }, // this Username is from the params
     { $set: {
       Name,
       Username,
-      Password,
+      Password: hashedPassword, // save the hashed password value
       Email,
       Birthday
     }},
