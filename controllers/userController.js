@@ -96,8 +96,12 @@ module.exports.user_update = (req, res) => {
     }},
     { new: true}) // pass the updated document to the callback
     .then( updatedUser => {
-      // return the updated user
-      res.json(updatedUser);
+      if (updatedUser) {
+        // return the updated user
+        res.json(updatedUser);
+      } else {
+        return res.status(404).send(`User ${Username} not found.`);
+      }
     })
     .catch( err => {
       console.error(err);
