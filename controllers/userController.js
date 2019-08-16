@@ -136,7 +136,11 @@ module.exports.user_add_favorite_movie = (req, res) => {
   },
   { new : true }) // Pass the updated document to the callback
     .then( updatedUser => {
-      res.json(updatedUser);
+      if (updatedUser) {
+        res.json(updatedUser); // return the updated user
+      } else {
+        return res.status(404).send(`User ${Username} not found.`);
+      }      
     })
     .catch( err => {
       console.error(err);
@@ -152,7 +156,11 @@ module.exports.user_remove_favorite_movie = (req, res) => {
   },
   { new : true }) // Pass the updated document to the callback
     .then( updatedUser => {
-      res.json(updatedUser);
+      if (updatedUser) {
+        res.json(updatedUser); // return the updated user
+      } else {
+        return res.status(404).send(`User ${Username} not found.`);
+      }   
     })
     .catch( err => {
       console.error(err);
