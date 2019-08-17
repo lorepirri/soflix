@@ -1,5 +1,6 @@
-const { body, validationResult, sanitizeBody } = require('express-validator');
+const { body, validationResult, sanitizeBody, param } = require('express-validator');
 const Users = require('../models/users');
+const Movies = require('../models/movies');
 
 // All validation, and sanitization on User.
 // Used where needed (Create/Update).
@@ -180,24 +181,49 @@ module.exports.user_delete = (req, res) => {
 };
 
 // Add a favorite Movie to a User.
-module.exports.user_add_favorite_movie = (req, res) => {
-  let { Username, MovieID } = req.params;
-  Users.findOneAndUpdate({ Username }, {
-    $addToSet : { FavoriteMovies : MovieID }
-  },
-  { new : true }) // Pass the updated document to the callback
-    .then( updatedUser => {
-      if (updatedUser) {
-        res.json(updatedUser); // return the updated user
-      } else {
-        return res.status(404).send(`User ${Username} not found.`);
-      }      
-    })
-    .catch( err => {
-      console.error(err);
-      res.status(500).send(`Error: <${err}>.`);
-    });
-};
+module.exports.user_add_favorite_movie = [
+  
+  // validation
+  param('MovieID').isMongoId().withMessage('MovieID must be a valid ObjectId.'),
+
+  (req, res) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+    // If there are errors, return    
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    let { Username, MovieID } = req.params;
+    // check if a Movie with MovieID exists
+    Movies.findById(MovieID)
+      .then(movie => {
+        if (movie) {
+          // Movie exists, add its _id to the user with Username
+          Users.findOneAndUpdate({ Username }, {
+            $addToSet : { FavoriteMovies : MovieID }
+          },
+          { new : true }) // Pass the updated document to the callback
+            .then( updatedUser => {
+              if (updatedUser) {
+                res.json(updatedUser); // return the updated user
+              } else {
+                return res.status(404).send(`User ${Username} not found.`);
+              }      
+            })
+            .catch( err => {
+              console.error(err);
+              res.status(500).send(`Error: <${err}>.`);
+            });      
+        } else {
+          return res.status(404).send(`Movie ${MovieID} not found.`);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        return Promise.reject(`Error <${err}>`);
+      });
+  }];
 
 // Remove a favorite Movie to a User.
 module.exports.user_remove_favorite_movie = (req, res) => {
