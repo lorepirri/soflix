@@ -9,8 +9,10 @@ require('dotenv').config();
 const passport = require('passport');
 require('./passport');
 
+var port = process.env.PORT || 3000;
+
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080'];
+let allowedOrigins = [`http://localhost:${port}`, ...process.env.ALLOWED_ORIGINS];
 
 const app = express();
 
@@ -36,7 +38,7 @@ const directorsRouter = require('./routes/directors');
 
 // connect to mongodb
 // https://stackoverflow.com/questions/52572852/deprecationwarning-collection-findandmodify-is-deprecated-use-findoneandupdate
-mongoose.connect('mongodb://localhost:27017/SoFlixDB', {useNewUrlParser: true, useFindAndModify: false });
+mongoose.connect(process.env.MONGOOSE_CONNECTION_STRING, {useNewUrlParser: true, useFindAndModify: false });
 const db = mongoose.connection;
 //Bind error messages to console.error
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -84,7 +86,7 @@ app.use(function(err, req, res, next) {
 
 
 
-var port = process.env.PORT || 3000;
+
 app.listen(port, '0.0.0.0', function() {
   console.log(`Soflix is listening on port ${port}`);
 });
