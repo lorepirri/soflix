@@ -1,1 +1,4 @@
-JWT_SECRET=
+JWT_SECRET='your_jwt_secret'
+MONGOOSE_CONNECTION_STRING='mongodb://localhost:27017/SoFlixDB'
+MONGOOSE_CONNECTION_STRING_LOCAL='mongodb://localhost:27017/SoFlixDB'
+ALLOWED_ORIGINS=['http://localhost:8080', 'http://testsite.com']
