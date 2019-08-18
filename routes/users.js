@@ -39,7 +39,7 @@ module.exports = function(app, passport) {
       return res.status(401).send(`Forbidden operation for user <${authenticatedUsername}>.`);
     } 
     // authorization successful
-    next();  
+    next();
   }
 
   function authorize(req, res, next) {
