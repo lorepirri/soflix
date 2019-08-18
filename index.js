@@ -51,17 +51,22 @@ app.use(express.static('public'));
 
 app.use(bodyParser.json());
 
-// // must be just right after bodyParser.json
-// var auth = require('./auth')(app);
+// Routes //
+
+// No authentication routes
+
 // Add index routes to middleware chain.
 app.use('/login', authRouter);
 
-// Routes //
+// Mixed authentication/no-authentication routes
+
+// Add users routes to middleware chain (POST /users is public, to allow user creation).
+app.use('/users', usersRouter(app, passport)); // one route is public: authentication done in router
+
+// Following routes use authentication
 
 // Add index routes to middleware chain.
 app.use('/', passport.authenticate('jwt', { session: false }), indexRouter);
-// Add users routes to middleware chain.
-app.use('/users', passport.authenticate('jwt', { session: false }), usersRouter);
 // Add movies routes to middleware chain.
 app.use('/movies', passport.authenticate('jwt', { session: false }), moviesRouter);
 // Add genres routes to middleware chain.
