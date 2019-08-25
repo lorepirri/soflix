@@ -12,7 +12,7 @@ require('./passport');
 var port = process.env.PORT || 3000;
 
 const cors = require('cors');
-let allowedOrigins = [`http://localhost:${port}`, ...process.env.ALLOWED_ORIGINS];
+let allowedOrigins = [`http://localhost:${port}`, ...process.env.ALLOWED_ORIGINS.split(' ')];
 
 const app = express();
 

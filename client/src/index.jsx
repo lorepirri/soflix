@@ -4,14 +4,13 @@ import ReactDOM from 'react-dom';
 // imports for files to bundle
 import './index.scss';
 
+// import components
+import { MainView } from './components/main-view/main-view';
+
 // main component
 class SoFlixApplication extends React.Component {
   render() {
-    return (
-      <div className="soflix">
-        <div>Hello world!!!</div>
-      </div>
-    );
+    return (<MainView /> );
   }
 }
 
