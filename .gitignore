@@ -1,5 +1,7 @@
 # avoid .env to be in the public repository
 .env
+/dist
+.cache
 
 # Logs
 logs
