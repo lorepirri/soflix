@@ -21,11 +21,13 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "eslint": "^5.16.0",
     "eslint-plugin-node": "^9.0.1",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "sass": "^1.22.10"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
