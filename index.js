@@ -58,6 +58,9 @@ app.use(bodyParser.json());
 // Add index routes to middleware chain.
 app.use('/login', authRouter);
 
+// Add movies routes to middleware chain.
+app.use('/movies', moviesRouter);
+
 // Mixed authentication/no-authentication routes
 
 // Add users routes to middleware chain (POST /users is public, to allow user creation).
@@ -67,8 +70,6 @@ app.use('/users', usersRouter(app, passport)); // one route is public: authentic
 
 // Add index routes to middleware chain.
 app.use('/', passport.authenticate('jwt', { session: false }), indexRouter);
-// Add movies routes to middleware chain.
-app.use('/movies', passport.authenticate('jwt', { session: false }), moviesRouter);
 // Add genres routes to middleware chain.
 app.use('/genres', passport.authenticate('jwt', { session: false }), genresRouter);
 // Add directors routes to middleware chain.
