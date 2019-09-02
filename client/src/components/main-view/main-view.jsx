@@ -198,7 +198,7 @@ export class MainView extends React.Component {
   }
 
   renderMainView() {
-    const { movies, selectedMovie, user, userAction  } = this.state;
+    const { movies, selectedMovie } = this.state;
     // if movies is not yet loaded
     if (!movies) {
       return (
@@ -237,7 +237,7 @@ export class MainView extends React.Component {
   
   render() {
 
-    const { movies, selectedMovie, user, userAction  } = this.state;
+    const { user, userAction  } = this.state;
     let loginView = <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
     let registrationView = <RegistrationView onNewUserRegistered={user => this.onNewUserRegistered(user)} />;
 
