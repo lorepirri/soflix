@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -24,8 +25,19 @@ export function LoginView(props) {
       event.stopPropagation();
     } else {
       console.log('new login', username, 'with password', password);
-      // this is temporary, always accept username/password
-      props.onLoggedIn(username);      
+      // send a request to the server for authentication
+      const login_url = 'https://soflix.herokuapp.com/login';
+      axios.post(login_url, {
+        Username: username,
+        Password: password
+      })
+        .then( res => {
+          const authData = res.data;
+          props.onLoggedIn(authData);
+        })
+        .catch( err => {
+          console.error(`User <${username}> not found.`);
+        });
     }
     // notify that fields were validated,
     // therefore feedback can be shown

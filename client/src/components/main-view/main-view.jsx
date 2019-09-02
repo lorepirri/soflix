@@ -42,17 +42,30 @@ export class MainView extends React.Component {
   }
 
   componentDidMount() {
-    // let url_root = 'http://localhost:3000'
-    let url_root = 'https://soflix.herokuapp.com'
-    axios.get(`${url_root}/movies`)
-      .then( response => {
-        // set state with result
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
+      });
+      this.getMovies(accessToken);
+    }
+  }
+
+  getMovies(token) {
+    // const url_root = 'http://localhost:3000'
+    const url_root = 'https://soflix.herokuapp.com'
+    const movies_url = `${url_root}/movies`;
+    axios.get(movies_url, {
+      headers: { Authorization: `Bearer ${token}`}
+    })
+      .then( res => {
+        // update the state
         this.setState({
-          movies: response.data
-        });
+          movies: res.data
+        })
       })
       .catch( err => {
-        console.log(err);
+        console.error(err);
       });
   }
 
@@ -63,11 +76,23 @@ export class MainView extends React.Component {
     })
   }
 
-  onLoggedIn(user) {
+  onLoggedIn(authData) {
+    let user = null
+    if (authData) {
+      user = authData.user.Username
+    }
     this.setState({
       user,
       userAction: null
     });
+    if (user) {
+      localStorage.setItem('token', authData.token);
+      localStorage.setItem('user', authData.user.Username);
+      this.getMovies(authData.token);
+    } else {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
   }
 
   onNewUserRegistered(user) {
