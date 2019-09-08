@@ -1,0 +1,27 @@
+/* ===GLOBAL=== */
+/* ===PRIMARY=== */
+/* ===FORMS=== */
+
+
+/* ===GLOBAL=== */
+
+$color: steelblue;
+$form-container-color: #ececec;
+
+/* ===PRIMARY=== */
+
+.soflix {
+  color: $color;
+}
+
+/* ===FORMS=== */
+
+.form-container {
+  position: relative;
+  
+  padding: 1rem;
+  margin-right: 0;
+  margin-left: 0;
+  border: .2rem solid $form-container-color;
+  border-radius: 8px;
+}

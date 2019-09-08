@@ -4,13 +4,12 @@ import ReactDOM from 'react-dom';
 // imports for files to bundle
 import './index.scss';
 
-// import components
-import { MainView } from './components/main-view/main-view';
+import App from './app.jsx';
 
 // main component
 class SoFlixApplication extends React.Component {
   render() {
-    return (<MainView /> );
+    return (<App /> );
   }
 }
 
