@@ -20,7 +20,8 @@ import './header.scss';
 const LOGIN_PATH = '/login';
 const REGISTRATION_PATH = '/register';
 const MOVIE_PATH = '/movies/:movieId';
-
+const GENRE_PATH = '/genres/:genreName';
+const DIRECTOR_PATH = '/directors/:directorName';
 
 function ActionPanelNoUser(props) {
   return (
@@ -55,7 +56,7 @@ function ActionPanelUser(props) {
 
 export function Header(props) {
   // vars
-  const { match, movie, user, onLoggedIn } = props;
+  const { match, movie, genre, user, director, onLoggedIn } = props;
   // if not inside a Route, force path to '/'
   const { path } = match || { path: '/'};
   // check if movies are loaded, if any of these, then not
@@ -69,28 +70,35 @@ export function Header(props) {
   let showActionPanel = true;
   let isLoginOrRegistration = false;
   let navTitle = 'SoFlix';
+  let isMovie = false;
+  let isHome = false;
   // check if user is logged in
-  if (!user) {
-    if (path === LOGIN_PATH ) {
-      // a log in was requested
-      navTitle = 'Log in to SoFlix';
-      isLoginOrRegistration = true;
-    } else if (path === REGISTRATION_PATH ) {
-      // a sign up was requested
-      navTitle = 'Register to SoFlix';
-      isLoginOrRegistration = true;
-    }
-  }
-  showActionPanel = !isLoginOrRegistration && isReady;
-  const isMovie = (path === MOVIE_PATH)
-  if (isMovie) {
+  if (path === LOGIN_PATH ) {
+    // a log in was requested
+    navTitle = 'Log in to SoFlix';
+    isLoginOrRegistration = true;
+  } else if (path === REGISTRATION_PATH ) {
+    // a sign up was requested
+    navTitle = 'Register to SoFlix';
+    isLoginOrRegistration = true;
+  } else if (path === GENRE_PATH ) {
+    navTitle = genre.Name;
+    console.log('genre: ', genre);
+  } else if (path === MOVIE_PATH ) {
     navTitle = movie.Title;
+  } else if (path === DIRECTOR_PATH ) {
+    isMovie = true;
+    navTitle = director.Name;
+  } else if (path === '/' ) {
+    isHome = true;
   }
+
+  showActionPanel = !isLoginOrRegistration && isReady;
 
   return (
     <Navbar collapseOnSelect expand="sm" bg="light" variant="light">
       <Navbar.Brand className="mw-80 mw-sm-100 text-truncate">
-        {isMovie || isLoginOrRegistration 
+        {!isHome
           ?
           <React.Fragment>
           <a href="#" onClick={(e) => {props.history.goBack(); e.preventDefault();}}>
@@ -113,7 +121,7 @@ export function Header(props) {
           <Navbar.Toggle aria-controls="responsive-navbar-nav"></Navbar.Toggle>
           <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            {(isMovie && user && !isLoginOrRegistration) &&
+            {(isMovie && user) &&
               <FontAwesomeIcon icon={faStar} className="ml-2 ml-sm-4" />
             }
           </Nav>
