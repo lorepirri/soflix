@@ -22,6 +22,7 @@ const REGISTRATION_PATH = '/register';
 const MOVIE_PATH = '/movies/:movieId';
 const GENRE_PATH = '/genres/:genreName';
 const DIRECTOR_PATH = '/directors/:directorName';
+const PROFILE_PATH = '/profile';
 
 function ActionPanelNoUser(props) {
   return (
@@ -44,7 +45,7 @@ function ActionPanelUser(props) {
   return (
     <Form inline className="my-4 my-sm-0 d-flex justify-content-center justify-content-sm-end">
       <Navbar.Text>
-        Signed in as: <a href="#profile">{user}</a>
+        Signed in as: <Link to={PROFILE_PATH}>{user}</Link>
       </Navbar.Text>        
       <Button 
         variant="outline-primary" 
@@ -68,7 +69,7 @@ export function Header(props) {
   console.log(user);
 
   let showActionPanel = true;
-  let isLoginOrRegistration = false;
+  let isUserAction = false;
   let navTitle = 'SoFlix';
   let isMovie = false;
   let isHome = false;
@@ -76,24 +77,26 @@ export function Header(props) {
   if (path === LOGIN_PATH ) {
     // a log in was requested
     navTitle = 'Log in to SoFlix';
-    isLoginOrRegistration = true;
+    isUserAction = true;
   } else if (path === REGISTRATION_PATH ) {
     // a sign up was requested
     navTitle = 'Register to SoFlix';
-    isLoginOrRegistration = true;
+    isUserAction = true;
   } else if (path === GENRE_PATH ) {
     navTitle = genre.Name;
-    console.log('genre: ', genre);
   } else if (path === MOVIE_PATH ) {
     navTitle = movie.Title;
   } else if (path === DIRECTOR_PATH ) {
     isMovie = true;
     navTitle = director.Name;
+  } else if (path === PROFILE_PATH ) {
+    navTitle = user;
+    isUserAction = true;
   } else if (path === '/' ) {
     isHome = true;
   }
 
-  showActionPanel = !isLoginOrRegistration && isReady;
+  showActionPanel = !isUserAction && isReady;
 
   return (
     <Navbar collapseOnSelect expand="sm" bg="light" variant="light">
