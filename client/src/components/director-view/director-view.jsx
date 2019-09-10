@@ -19,7 +19,7 @@ export const DirectorView = (props) => {
     <div className="director-view">
       <h1>{director.Name}</h1>
       { // render the birth year (4 chars) if present
-        director.Birthyear && <h6>Born in {director.Birthyear.substring(0,4)}</h6>}
+        director.Birthyear && <h6 className="text-muted">Born in {director.Birthyear.substring(0,4)}</h6>}
       <br />
       <Media className="d-flex flex-column flex-md-row align-items-center">
         <Media.Body>
