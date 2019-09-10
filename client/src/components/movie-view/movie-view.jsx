@@ -19,21 +19,19 @@ export const MovieView = (props) => {
       <Media className="d-flex flex-column flex-md-row align-items-center">
         <Media.Body>
 
-          <h6>Genre:&nbsp;
+          <h5>Genre:&nbsp;
             <Link to={`/genres/${movie.Genre.Name}`}>{movie.Genre.Name}</Link>
-          </h6>
-          <h6>Director:&nbsp;
+          </h5>
+          <h5>Director:&nbsp;
             <Link to={`/directors/${movie.Director.Name}`}>{movie.Director.Name}</Link>
-          </h6>
+          </h5>
 
 
 
 
           <br />
-          <h6>Description</h6>
-          <p>
-            {movie.Description}
-          </p>
+          <h5>Description</h5>
+          <p>{movie.Description}</p>
         </Media.Body>
         <img
           width={220}
