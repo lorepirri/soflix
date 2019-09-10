@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 
 // import app components
-import { MovieCard } from '../movie-card/movie-card';
+import { MoviesGrid } from '../movies-grid/movies-grid';
 
 
 function NoMovies(props) {
@@ -26,21 +26,14 @@ function NoMovies(props) {
 
 export function MainView(props) {
   
-  const { movies, onMovieClick } = props;
+  const { movies } = props;
 
   return (
       !movies
       ? <NoMovies />
-      : (<React.Fragment>
-          <div className="main-view card-deck">
-            {movies.map(movie => (
-            <MovieCard 
-              key={movie._id}
-              movie={movie}
-            />
-            ))}
-          </div>
-        </React.Fragment>)
+      : (<MoviesGrid 
+            movies={movies}
+        />)
   );
 }
 
