@@ -22,9 +22,6 @@ import { LoginView } from './components/login-view/login-view';
 import { RegistrationView } from './components/registration-view/registration-view';
 import { MovieView } from './components/movie-view/movie-view';
 
-// some constants
-const REGISTER_NEW_USER = 'registerNewUser';
-const LOGIN_USER = 'login';
 
 const DefaultLayout = ({component: Component, ...rest}) => {
 
@@ -149,15 +146,6 @@ class App extends React.Component {
       </Switch>
       </Router>
     );
-    //   <Route exact path="/genres/:name" render={/* genre view*/}/>
-    //   <Route exact path="/directors/:name" render={/* director view */}/>
-
-{/* <Route path="/directors/:name" render={({ match }) => {
-  if (!movies) return <div className="main-view"/>;
-  return <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director}/>}
-} /> */}
-
-
   }
 }
 
