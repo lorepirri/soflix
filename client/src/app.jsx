@@ -27,11 +27,10 @@ const REGISTER_NEW_USER = 'registerNewUser';
 const LOGIN_USER = 'login';
 
 const DefaultLayout = ({component: Component, ...rest}) => {
-  const { history, match, user, movie, onLoggedIn } = {...rest};
 
   return (
     <React.Fragment>
-      <Header history={history} match={match} user={user} movie={movie} onLoggedIn={onLoggedIn} />
+      <Header {...rest} />
       <Container className="mt-5">
         <Component {...rest} />
       </Container>
