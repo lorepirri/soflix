@@ -21,6 +21,8 @@ import { MainView } from './components/main-view/main-view';
 import { LoginView } from './components/login-view/login-view';
 import { RegistrationView } from './components/registration-view/registration-view';
 import { MovieView } from './components/movie-view/movie-view';
+import { GenreView } from './components/genre-view/genre-view';
+import { DirectorView } from './components/director-view/director-view';
 
 
 const DefaultLayout = ({component: Component, ...rest}) => {
@@ -143,6 +145,13 @@ class App extends React.Component {
             user={user}
             component={MainView} movies={movies}
             onLoggedIn={user => this.onLoggedIn(user)} />
+          <Route
+            path="/genres/:genreName"
+            render={(matchProps) => <DefaultLayout {...matchProps} component={GenreView} user={user} genre={movies.find(m => m.Genre.Name === matchProps.match.params.genreName).Genre} movies={movies.filter(m => m.Genre.Name === matchProps.match.params.genreName)} onLoggedIn={user => this.onLoggedIn(user)} />}/>
+          <Route
+            path="/directors/:directorName"
+            render={(matchProps) => <DefaultLayout {...matchProps} component={DirectorView} user={user} director={movies.find(m => m.Director.Name === matchProps.match.params.directorName).Director} movies={movies.filter(m => m.Director.Name === matchProps.match.params.directorName)} onLoggedIn={user => this.onLoggedIn(user)} />}/>
+
       </Switch>
       </Router>
     );
