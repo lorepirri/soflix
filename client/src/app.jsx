@@ -23,6 +23,7 @@ import { RegistrationView } from './components/registration-view/registration-vi
 import { MovieView } from './components/movie-view/movie-view';
 import { GenreView } from './components/genre-view/genre-view';
 import { DirectorView } from './components/director-view/director-view';
+import { ProfileView } from './components/profile-view/profile-view';
 
 
 const DefaultLayout = ({component: Component, ...rest}) => {
@@ -55,7 +56,8 @@ class App extends React.Component {
     // init an empty state
     this.state = { 
       movies: null,
-      user: null
+      user: null,
+      userProfile: null
     };
   }
 
@@ -63,8 +65,11 @@ class App extends React.Component {
 
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
+      let userProfileString = localStorage.getItem('user-profile');
+      let userProfile = JSON.parse(userProfileString);
       this.setState({
-        user: localStorage.getItem('user')
+        user: localStorage.getItem('user'),
+        userProfile
       });
     }
     this.getMovies(accessToken);
@@ -94,36 +99,44 @@ class App extends React.Component {
 
   onLoggedIn(authData) {
     let user = null;
+    let userProfile = null;
     if (authData) {
       user = authData.user.Username;
+      userProfile = authData.user;
     }
     this.setState({
-      user
+      user,
+      userProfile
     });
     if (user) {
       localStorage.setItem('token', authData.token);
       localStorage.setItem('user', authData.user.Username);
+      localStorage.setItem('user-profile', JSON.stringify(authData.user));
       this.getMovies(authData.token);
     } else {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('user-profile');
     }
     window.open('/', '_self');
   }
 
-  onNewUserRegistered(user) {
-    this.setState({
-      user
-    });
+  onUserUpdate(userProfile) {
+    if (userProfile) {
+      localStorage.setItem('user-profile', userProfile);
+      this.setState({
+        userProfile
+      });
+    }
   }
 
   render() {
-    const { user, movies } = this.state;
-
+    const { user, userProfile, movies } = this.state;
+    
     if (!movies) {
       return (<DefaultLayout component={MainView} onLoggedIn={user => this.onLoggedIn(user)} />);
     }
-
+    console.log('userProfile',userProfile);
     return (
       <Router history={history}>
         <Switch>
@@ -138,8 +151,7 @@ class App extends React.Component {
             path="/register"
             user={user}
             component={RegistrationView}
-            onLoggedIn={user => this.onLoggedIn(user)}
-            onNewUserRegistered={user => this.onNewUserRegistered(user)} />
+            onLoggedIn={user => this.onLoggedIn(user)} />
           <DefaultLayoutRoute 
             exact path="/"
             user={user}
@@ -151,7 +163,9 @@ class App extends React.Component {
           <Route
             path="/directors/:directorName"
             render={(matchProps) => <DefaultLayout {...matchProps} component={DirectorView} user={user} director={movies.find(m => m.Director.Name === matchProps.match.params.directorName).Director} movies={movies.filter(m => m.Director.Name === matchProps.match.params.directorName)} onLoggedIn={user => this.onLoggedIn(user)} />}/>
-
+          <Route
+            path="/profile"
+            render={(matchProps) => <DefaultLayout {...matchProps} component={ProfileView} user={user} userProfile={userProfile} movies={movies.filter(m => userProfile.FavoriteMovies.includes(m._id))} onLoggedIn={user => this.onLoggedIn(user)} onUserUpdate={userProfile => this.onUserUpdate(userProfile)} />}/>
       </Switch>
       </Router>
     );
