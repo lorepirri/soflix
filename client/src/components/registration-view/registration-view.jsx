@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -47,8 +48,23 @@ export function RegistrationView(props) {
       event.stopPropagation();
     } else {
       console.log('new registration', username, 'with password', password);
-      // this is temporary, always accept username/password
-      props.onNewUserRegistered(username);      
+
+      const register_url = 'https://soflix.herokuapp.com/users';
+      axios.post(register_url, {
+        Name: name,
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday
+      })
+      .then(response => {
+        const data = response.data;
+        console.log(data);
+        window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+      })
+      .catch(e => {
+        console.log('error registering the user')
+      });      
     }
     // notify that fields were validated,
     // therefore feedback can be shown
@@ -78,5 +94,5 @@ export function RegistrationView(props) {
 };
 
 RegistrationView.propTypes = {
-  onNewUserRegistered: PropTypes.func.isRequired
+  // no props so far
 };
