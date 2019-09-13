@@ -85,12 +85,12 @@ export function Header(props) {
   } else if (path === GENRE_PATH ) {
     navTitle = genre.Name;
   } else if (path === MOVIE_PATH ) {
+    isMovie = true;    
     navTitle = movie.Title;
   } else if (path === DIRECTOR_PATH ) {
-    isMovie = true;
     navTitle = director.Name;
   } else if (path === PROFILE_PATH ) {
-    navTitle = user;
+    navTitle = `Profile of ${user}`;
     isUserAction = true;
   } else if (path === '/' ) {
     isHome = true;
