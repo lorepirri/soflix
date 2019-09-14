@@ -14,7 +14,8 @@ import { MoviesGrid } from '../movies-grid/movies-grid';
 import './profile-view.scss';
 
 export function ProfileView(props) {
-  const { movies, userProfile } = props;
+  const { movies, userProfile, token } = props;
+
   const [ name, setName ] = useState(userProfile.Name);
   const [ username, setUsername ] = useState(userProfile.Username);
   const [ password, setPassword ] = useState('');
@@ -46,6 +47,13 @@ export function ProfileView(props) {
 
     e.preventDefault();
 
+    if (!token) {
+      // if token is not present, user is not logged in, go home
+      console.log('user is not logged in');
+      window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+      return
+    }
+
     // handles form validation
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -53,17 +61,22 @@ export function ProfileView(props) {
     } else {
       console.log('user update', username, 'with password', password);
 
-      const register_url = 'https://soflix.herokuapp.com/users';
+      let options = {}
+      if (token) {
+        options = {
+          headers: { Authorization: `Bearer ${token}`}
+        }
+      }
+
       axios.put(register_url, {
         Name: name,
         Username: username,
         Password: password,
         Email: email,
         Birthday: birthday
-      })
+      }, options)
       .then(response => {
         const data = response.data;
-        console.log(data);
         props.onUserUpdate(data)
       })
       .catch(e => {
@@ -80,18 +93,29 @@ export function ProfileView(props) {
 
     e.preventDefault();
 
+    if (!token) {
+      // if token is not present, user is not logged in, go home
+      console.log('user is not logged in');
+      window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+      return
+    }
+
     console.log('unregister user', username);
 
-    const unregister_url = `https://soflix.herokuapp.com/users/${username}`;
-    axios.delete(unregister_url)
+    let options = {}
+    if (token) {
+      options = {
+        headers: { Authorization: `Bearer ${token}`}
+      }
+    }
+
+    axios.delete(unregister_url, options)
     .then(response => {
       const data = response.data;
-      console.log(data);
       props.onLoggedIn(null); // logout the user from the current session
-      window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
     })
     .catch(e => {
-      console.log('error registering the user')
+      console.log('error unregistering the user', e)
     });      
   };
 
@@ -153,6 +177,7 @@ ProfileView.propTypes = {
       })    
     })
   ),
+  token: PropTypes.string.isRequired,
   onLoggedIn: PropTypes.func.isRequired,
   onUserUpdate: PropTypes.func.isRequired
 };
