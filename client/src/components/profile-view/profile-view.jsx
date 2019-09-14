@@ -27,7 +27,7 @@ export function ProfileView(props) {
       feedback = `Please insert your ${label.toLowerCase()}.`;
     }
     return (
-      <Form.Group controlId="formBasicUsername">
+      <Form.Group controlId={`formBasic${label.trim()}`}>
         <Form.Label>{label}</Form.Label>
         <Form.Control 
           type={type}
