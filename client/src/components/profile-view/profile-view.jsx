@@ -19,7 +19,7 @@ export function ProfileView(props) {
   const [ username, setUsername ] = useState(userProfile.Username);
   const [ password, setPassword ] = useState('');
   const [ email, setEmail ] = useState(userProfile.Email);
-  const [ birthday, setBirthday ] = useState(userProfile.Birthday);
+  const [ birthday, setBirthday ] = useState(userProfile.Birthday.substring(0,10));
   const [ validated, setValidated] = useState(false);
 
   const formField = (label, value, onChange, type='text', feedback) => {
