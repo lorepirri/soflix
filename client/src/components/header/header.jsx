@@ -62,17 +62,17 @@ export function Header(props) {
   const { path } = match || { path: '/'};
   // check if movies are loaded, if any of these, then not
   let isReady = !(!match && !movie && !user);
-  
-  console.log(isReady);
-  console.log(match);
-  console.log(movie);
-  console.log(user);
-
+  // shows the action panel or not (log in / log out buttons)
   let showActionPanel = true;
+  // registration, login, or profile view, do no need action panel
   let isUserAction = false;
+  // title of the nav bar
   let navTitle = 'SoFlix';
+  // is it a movie?
   let isMovie = false;
+  // is it the home page?
   let isHome = false;
+
   // check if user is logged in
   if (path === LOGIN_PATH ) {
     // a log in was requested
