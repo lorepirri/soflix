@@ -16,6 +16,9 @@ import './profile-view.scss';
 export function ProfileView(props) {
   const { movies, userProfile, token } = props;
 
+  if (!userProfile) {
+    return null;
+  }
   const [ name, setName ] = useState(userProfile.Name);
   const [ username, setUsername ] = useState(userProfile.Username);
   const [ password, setPassword ] = useState('');
