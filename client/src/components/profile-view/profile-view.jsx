@@ -17,7 +17,7 @@ export function ProfileView(props) {
   const { movies, userProfile } = props;
   const [ name, setName ] = useState(userProfile.Name);
   const [ username, setUsername ] = useState(userProfile.Username);
-  const [ password, setPassword ] = useState(userProfile.Password);
+  const [ password, setPassword ] = useState('');
   const [ email, setEmail ] = useState(userProfile.Email);
   const [ birthday, setBirthday ] = useState(userProfile.Birthday);
   const [ validated, setValidated] = useState(false);
