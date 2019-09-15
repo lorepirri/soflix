@@ -27,7 +27,6 @@ import { ProfileView } from './components/profile-view/profile-view';
 
 
 const DefaultLayout = ({component: Component, ...rest}) => {
-
   return (
     <React.Fragment>
       <Header {...rest} />
@@ -57,7 +56,8 @@ class App extends React.Component {
     this.state = { 
       movies: null,
       user: null,
-      userProfile: null
+      userProfile: null,
+      token: null
     };
   }
 
@@ -69,7 +69,8 @@ class App extends React.Component {
       let userProfile = JSON.parse(userProfileString);
       this.setState({
         user: localStorage.getItem('user'),
-        userProfile
+        userProfile,
+        token: accessToken
       });
     }
     this.getMovies(accessToken);
@@ -100,14 +101,13 @@ class App extends React.Component {
   onLoggedIn(authData) {
     let user = null;
     let userProfile = null;
+    let token = null;
     if (authData) {
       user = authData.user.Username;
       userProfile = authData.user;
+      token = authData.token;
     }
-    this.setState({
-      user,
-      userProfile
-    });
+
     if (user) {
       localStorage.setItem('token', authData.token);
       localStorage.setItem('user', authData.user.Username);
@@ -118,55 +118,58 @@ class App extends React.Component {
       localStorage.removeItem('user');
       localStorage.removeItem('user-profile');
     }
+
+    this.setState({
+      user,
+      userProfile,
+      token
+    });
+
     window.open('/', '_self');
   }
 
   onUserUpdate(userProfile) {
     if (userProfile) {
-      localStorage.setItem('user-profile', userProfile);
+      localStorage.setItem('user-profile', JSON.stringify(userProfile));
       this.setState({
         userProfile
       });
+      window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
     }
   }
 
   render() {
-    const { user, userProfile, movies } = this.state;
-    
+    const { user, userProfile, movies, token } = this.state;
+    // the log in / log out function
+    const onLoggedIn = user => this.onLoggedIn(user);
+    // these are propagated through all the routes
+    const routeProps = { user, token, onLoggedIn };
+    // if movies are not yet loaded, return a spinner
     if (!movies) {
-      return (<DefaultLayout component={MainView} onLoggedIn={user => this.onLoggedIn(user)} />);
+      return (<DefaultLayout component={MainView} onLoggedIn={onLoggedIn} />);
     }
-    console.log('userProfile',userProfile);
     return (
       <Router history={history}>
         <Switch>
           <Route
             path="/movies/:movieId"
-            render={(matchProps) => <DefaultLayout {...matchProps} component={MovieView} user={user} movie={movies.find(m => m._id === matchProps.match.params.movieId)} onLoggedIn={user => this.onLoggedIn(user)} />}/>
+            render={(matchProps) => <DefaultLayout {...matchProps} {...routeProps} component={MovieView} movie={movies.find(m => m._id === matchProps.match.params.movieId)} />}/>
           <DefaultLayoutRoute 
-            path="/login"
-            user={user}
-            component={LoginView} onLoggedIn={user => this.onLoggedIn(user)} />
+            path="/login" component={LoginView} {...routeProps} />
           <DefaultLayoutRoute 
-            path="/register"
-            user={user}
-            component={RegistrationView}
-            onLoggedIn={user => this.onLoggedIn(user)} />
+            path="/register" component={RegistrationView} {...routeProps} />
           <DefaultLayoutRoute 
-            exact path="/"
-            user={user}
-            component={MainView} movies={movies}
-            onLoggedIn={user => this.onLoggedIn(user)} />
+            exact path="/" component={MainView} {...routeProps} movies={movies} />
           <Route
             path="/genres/:genreName"
-            render={(matchProps) => <DefaultLayout {...matchProps} component={GenreView} user={user} genre={movies.find(m => m.Genre.Name === matchProps.match.params.genreName).Genre} movies={movies.filter(m => m.Genre.Name === matchProps.match.params.genreName)} onLoggedIn={user => this.onLoggedIn(user)} />}/>
+            render={(matchProps) => <DefaultLayout {...matchProps} {...routeProps} component={GenreView} genre={movies.find(m => m.Genre.Name === matchProps.match.params.genreName).Genre} movies={movies.filter(m => m.Genre.Name === matchProps.match.params.genreName)} />}/>
           <Route
             path="/directors/:directorName"
-            render={(matchProps) => <DefaultLayout {...matchProps} component={DirectorView} user={user} director={movies.find(m => m.Director.Name === matchProps.match.params.directorName).Director} movies={movies.filter(m => m.Director.Name === matchProps.match.params.directorName)} onLoggedIn={user => this.onLoggedIn(user)} />}/>
+            render={(matchProps) => <DefaultLayout {...matchProps} {...routeProps} component={DirectorView} director={movies.find(m => m.Director.Name === matchProps.match.params.directorName).Director} movies={movies.filter(m => m.Director.Name === matchProps.match.params.directorName)} />}/>
           <Route
             path="/profile"
-            render={(matchProps) => <DefaultLayout {...matchProps} component={ProfileView} user={user} userProfile={userProfile} movies={movies.filter(m => userProfile.FavoriteMovies.includes(m._id))} onLoggedIn={user => this.onLoggedIn(user)} onUserUpdate={userProfile => this.onUserUpdate(userProfile)} />}/>
-      </Switch>
+            render={(matchProps) => <DefaultLayout {...matchProps} {...routeProps} component={ProfileView} userProfile={userProfile} movies={movies.filter(m => userProfile && userProfile.FavoriteMovies.includes(m._id))} onUserUpdate={userProfile => this.onUserUpdate(userProfile)} />}/>
+        </Switch>
       </Router>
     );
   }
