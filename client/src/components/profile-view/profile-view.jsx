@@ -26,7 +26,7 @@ export function ProfileView(props) {
   const [ birthday, setBirthday ] = useState(userProfile.Birthday.substring(0,10));
   const [ validated, setValidated] = useState(false);
 
-  const formField = (label, value, onChange, type='text', feedback) => {
+  const formField = (label, value, onChange, type='text', feedback, options) => {
     if (!feedback) {
       feedback = `Please insert your ${label.toLowerCase()}.`;
     }
@@ -38,6 +38,7 @@ export function ProfileView(props) {
           value={value}
           onChange={ e => onChange(e.target.value)}      
           required
+          {...options}
           placeholder={`Enter ${label.toLowerCase()}`} />
         <Form.Control.Feedback type="invalid">
           {feedback}
@@ -99,7 +100,7 @@ export function ProfileView(props) {
     if (!confirm('Do you really want to leave us?')) {
       return;
     }
-    
+
     if (!token) {
       // if token is not present, user is not logged in, go home
       console.log('user is not logged in');
@@ -132,11 +133,8 @@ export function ProfileView(props) {
         <Col className="mb-5" xs={11} sm={6} md={6}>
           <Form noValidate validated={validated} onSubmit={handleUpdate}>
             {formField('Name', name, setName)}
-            <Form.Group controlId="formBasicUsername">
-              <Form.Label>Username</Form.Label>
-              <Form.Control className="text-muted" plaintext readOnly defaultValue={username} />
-            </Form.Group>
-            {formField('Password', password, setPassword, 'password')}
+            {formField('Username', username, setUsername, 'text', '', {readOnly:true, disabled:true, required:false, value: username})}
+            {formField('Password', password, setPassword, 'password', 'Please provide a password of at least 6 characters.', {minLength: 6})}
             {formField('Email', email, setEmail, 'email', 'Please provide a valid email address.')}
             {formField('Birthday', birthday, setBirthday, 'date', 'Please provide a valid date (e.g. 01/01/1970).')}
 
