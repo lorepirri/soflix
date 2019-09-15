@@ -96,6 +96,10 @@ export function ProfileView(props) {
 
     e.preventDefault();
 
+    if (!confirm('Do you really want to leave us?')) {
+      return;
+    }
+    
     if (!token) {
       // if token is not present, user is not logged in, go home
       console.log('user is not logged in');
