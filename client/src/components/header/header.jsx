@@ -9,10 +9,11 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 // get fontawesome imports
-import { faStar } from "@fortawesome/free-regular-svg-icons";
-import { faStarSolid } from "@fortawesome/free-solid-svg-icons";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+// import app components
+import { StarButton } from '../star-button/star-button';
 
 // imports for files to bundle
 import './header.scss';
@@ -55,9 +56,11 @@ function ActionPanelUser(props) {
   );
 }
 
+
 export function Header(props) {
   // vars
   const { match, movie, genre, user, director, onLoggedIn } = props;
+  const { userProfile, onToggleFavourite } = props;
   // if not inside a Route, force path to '/'
   const { path } = match || { path: '/'};
   // check if movies are loaded, if any of these, then not
@@ -72,6 +75,8 @@ export function Header(props) {
   let isMovie = false;
   // is it the home page?
   let isHome = false;
+  // in case it is a movie, is it starred?
+  let isFavorite = false;
 
   // check if user is logged in
   if (path === LOGIN_PATH ) {
@@ -85,7 +90,8 @@ export function Header(props) {
   } else if (path === GENRE_PATH ) {
     navTitle = genre.Name;
   } else if (path === MOVIE_PATH ) {
-    isMovie = true;    
+    isMovie = true;
+    isFavorite = user && userProfile.FavoriteMovies.includes(movie._id);
     navTitle = movie.Title;
   } else if (path === DIRECTOR_PATH ) {
     navTitle = director.Name;
@@ -125,7 +131,11 @@ export function Header(props) {
           <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
             {(isMovie && user) &&
-              <FontAwesomeIcon icon={faStar} className="ml-2 ml-sm-4" />
+              <StarButton 
+                movieId={movie._id}
+                isFavorite={isFavorite}
+                onToggleFavourite={movieId => onToggleFavourite(movieId)}
+                className="ml-2 ml-sm-4" />
             }
           </Nav>
           {user 

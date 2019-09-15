@@ -77,8 +77,8 @@ class App extends React.Component {
   }
 
   getMovies(token) {
-    // const url_root = 'http://localhost:3000'
-    const url_root = 'https://soflix.herokuapp.com'
+    const url_root = 'http://localhost:3000'
+    // const url_root = 'https://soflix.herokuapp.com'
     const movies_url = `${url_root}/movies`;
     let options = {}
     if (token) {
@@ -128,22 +128,67 @@ class App extends React.Component {
     window.open('/', '_self');
   }
 
-  onUserUpdate(userProfile) {
+  onUserUpdate(userProfile, goHome=true) {
     if (userProfile) {
       localStorage.setItem('user-profile', JSON.stringify(userProfile));
       this.setState({
         userProfile
       });
-      window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+      if (goHome) {
+        window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+      }
     }
+  }
+
+  onToggleFavourite (movieId) {
+    
+    const { user: username, userProfile, token } = this.state;
+
+    if (!token) {
+      // if token is not present, user is not logged in, go home
+      console.log('user is not logged in');
+      window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+      return;
+    }
+
+    console.log('toggle favorite movie', movieId, 'for user', username);
+    
+    const url_root = 'http://localhost:3000'
+    // const url_root = 'https://soflix.herokuapp.com'
+    const favorite_movie_url = `${url_root}/users/${username}/${movieId}`;
+
+    let options = {
+      headers: { Authorization: `Bearer ${token}`}
+    };
+    let axiosAction = (url, options) => axios.post(url, null, options);
+    if (userProfile.FavoriteMovies.includes(movieId)) {
+      axiosAction = axios.delete;
+      console.log('remove from favorites.');
+    } else {
+      console.log('add to favorites.');
+    }
+
+    axiosAction(favorite_movie_url, options)
+    .then(response => {
+      const newUserProfile = response.data;
+      this.onUserUpdate(newUserProfile, false);
+    })
+    .catch(e => {
+      console.log('error toggling the movie as favorite:', e)
+    });      
   }
 
   render() {
     const { user, userProfile, movies, token } = this.state;
+    
     // the log in / log out function
     const onLoggedIn = user => this.onLoggedIn(user);
+    // toggle star/unstar function
+    const onToggleFavourite= movieId => this.onToggleFavourite(movieId);
+
     // these are propagated through all the routes
-    const routeProps = { user, token, onLoggedIn };
+    const routeProps = { user, token, onLoggedIn, userProfile, onToggleFavourite };
+
     // if movies are not yet loaded, return a spinner
     if (!movies) {
       return (<DefaultLayout component={MainView} onLoggedIn={onLoggedIn} />);
@@ -153,7 +198,10 @@ class App extends React.Component {
         <Switch>
           <Route
             path="/movies/:movieId"
-            render={(matchProps) => <DefaultLayout {...matchProps} {...routeProps} component={MovieView} movie={movies.find(m => m._id === matchProps.match.params.movieId)} />}/>
+            render={(matchProps) => <DefaultLayout {...matchProps} {...routeProps} 
+                                      component={MovieView} 
+                                      movie={movies.find(m => m._id === matchProps.match.params.movieId)}
+                                    />}/>
           <DefaultLayoutRoute 
             path="/login" component={LoginView} {...routeProps} />
           <DefaultLayoutRoute 
