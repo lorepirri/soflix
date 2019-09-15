@@ -13,7 +13,7 @@ import './director-view.scss';
 
 
 export const DirectorView = (props) => {
-  const { director, movies } = props;
+  const { director, movies, user, userProfile, onToggleFavourite } = props;
   if (!director) return null;
   return (
     <div className="director-view">
@@ -28,7 +28,13 @@ export const DirectorView = (props) => {
         </Media.Body>
       </Media>
       <br />
-      <MoviesGrid movies={movies} title="Some movies from this Director" />
+      <MoviesGrid 
+        movies={movies}
+        title="Some movies from this Director"
+        onToggleFavourite={movieId => onToggleFavourite(movieId)}
+        user={user}
+        userProfile={userProfile}
+      />
     </div>
   );
 }
@@ -55,5 +61,6 @@ DirectorView.propTypes = {
         Name: PropTypes.string
       })    
     })
-  )
+  ),
+  onToggleFavourite: PropTypes.func.isRequired
 };

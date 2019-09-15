@@ -26,13 +26,15 @@ function NoMovies(props) {
 
 export function MainView(props) {
   
-  const { movies } = props;
-
+  const { movies, user, userProfile, onToggleFavourite } = props;
   return (
       !movies
       ? <NoMovies />
       : (<MoviesGrid 
             movies={movies}
+            onToggleFavourite={movieId => onToggleFavourite(movieId)}
+            user={user}
+            userProfile={userProfile}
         />)
   );
 }
@@ -53,5 +55,6 @@ MainView.propTypes = {
         Name: PropTypes.string
       })    
     })
-  )
+  ),
+  onToggleFavourite: PropTypes.func.isRequired
 };

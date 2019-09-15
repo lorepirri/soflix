@@ -191,7 +191,7 @@ class App extends React.Component {
 
     // if movies are not yet loaded, return a spinner
     if (!movies) {
-      return (<DefaultLayout component={MainView} onLoggedIn={onLoggedIn} />);
+      return (<DefaultLayout component={MainView} onLoggedIn={onLoggedIn} onToggleFavourite={onToggleFavourite} />);
     }
     return (
       <Router history={history}>

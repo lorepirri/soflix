@@ -19,6 +19,10 @@ export function ProfileView(props) {
   if (!userProfile) {
     return null;
   }
+
+  
+  const { user, onToggleFavourite } = props;
+
   const [ name, setName ] = useState(userProfile.Name);
   const [ username, setUsername ] = useState(userProfile.Username);
   const [ password, setPassword ] = useState('');
@@ -154,7 +158,13 @@ export function ProfileView(props) {
         </Col>
       </Row>
       <br />
-      <MoviesGrid movies={movies} title="My favourite movies" />
+      <MoviesGrid 
+        movies={movies}
+        title="My favourite movies"
+        onToggleFavourite={movieId => onToggleFavourite(movieId)}
+        user={user}
+        userProfile={userProfile}
+      />
     </div>
   );
 };
@@ -186,5 +196,6 @@ ProfileView.propTypes = {
   ),
   token: PropTypes.string.isRequired,
   onLoggedIn: PropTypes.func.isRequired,
-  onUserUpdate: PropTypes.func.isRequired
+  onUserUpdate: PropTypes.func.isRequired,
+  onToggleFavourite: PropTypes.func.isRequired
 };

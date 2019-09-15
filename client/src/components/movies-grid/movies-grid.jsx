@@ -9,7 +9,8 @@ import './movies-grid.scss';
 
 export function MoviesGrid(props) {
   
-  const { movies, title } = props;
+  const { movies, title, user, userProfile, onToggleFavourite } = props;
+
   return (
     (movies && (movies.length > 0)) &&
     (<React.Fragment>
@@ -19,6 +20,9 @@ export function MoviesGrid(props) {
           <MovieCard 
             key={movie._id}
             movie={movie}
+            onToggleFavourite={movieId => onToggleFavourite(movieId)}
+            isFavorite={user && userProfile && userProfile.FavoriteMovies.includes(movie._id)}
+            user={user}
           />
           ))}
         </div>
@@ -43,5 +47,6 @@ MoviesGrid.propTypes = {
         Name: PropTypes.string
       })    
     })
-  )
+  ),
+  onToggleFavourite: PropTypes.func.isRequired
 };

@@ -154,7 +154,8 @@ export function Header(props) {
 Header.propTypes = {
   user: PropTypes.string,
   movie: PropTypes.object,
-  onLoggedIn: PropTypes.func.isRequired
+  onLoggedIn: PropTypes.func.isRequired,
+  onToggleFavourite: PropTypes.func.isRequired
 };
 
 ActionPanelNoUser.propTypes = {

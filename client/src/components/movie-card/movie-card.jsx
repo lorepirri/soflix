@@ -5,11 +5,14 @@ import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
+// import app components
+import { StarButton } from '../star-button/star-button';
+
 const MAX_CHARS_IN_A_DESCRIPTION = 100;
 
 export class MovieCard extends React.Component {
   render() {
-    const { movie } = this.props;
+    const { movie, user, isFavorite, onToggleFavourite } = this.props;
     let movieDescription = movie.Description;
     if (movieDescription.length > MAX_CHARS_IN_A_DESCRIPTION) {
       movieDescription = `${movieDescription.substring(0, MAX_CHARS_IN_A_DESCRIPTION)}...`;
@@ -18,7 +21,16 @@ export class MovieCard extends React.Component {
       <Card className="mb-3 mb-sm-4" style={{ minWidth: '12rem' }}>
         <Card.Img variant="top" src={movie.ImageUrl} />
         <Card.Body>
-          <Card.Title>{movie.Title}</Card.Title>
+          <Card.Title>
+            {movie.Title}
+            {user &&
+              <StarButton
+                movieId={movie._id}
+                isFavorite={isFavorite}
+                onToggleFavourite={movieId => onToggleFavourite(movieId)}
+                className="ml-2 ml-sm-4" />
+            }            
+          </Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{movie.Genre.Name}</Card.Subtitle>
           <Card.Text>{movieDescription}</Card.Text>
           <Link to={`/movies/${movie._id}`}>
@@ -39,5 +51,6 @@ MovieCard.propTypes = {
       Name: PropTypes.string,
       Description: PropTypes.string
     })
-  }).isRequired
+  }).isRequired,
+  onToggleFavourite: PropTypes.func.isRequired
 };
