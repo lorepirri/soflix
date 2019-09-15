@@ -128,13 +128,13 @@ export function ProfileView(props) {
 
   return (
     <div className="profile-view">
-      <Row className="justify-content-center">
-        <Col xs={11} sm={6} md={6}>
+      <Row>
+        <Col className="mb-5" xs={11} sm={6} md={6}>
           <Form noValidate validated={validated} onSubmit={handleUpdate}>
             {formField('Name', name, setName)}
             <Form.Group controlId="formBasicUsername">
               <Form.Label>Username</Form.Label>
-              <Form.Control plaintext readOnly defaultValue={username} />
+              <Form.Control className="text-muted" plaintext readOnly defaultValue={username} />
             </Form.Group>
             {formField('Password', password, setPassword, 'password')}
             {formField('Email', email, setEmail, 'email', 'Please provide a valid email address.')}
@@ -145,8 +145,10 @@ export function ProfileView(props) {
             </Button>
           </Form>
         </Col>
-        <Col xs={11} sm={6} md={6}>
-          <Form noValidate validated={validated} onSubmit={handleUnregister}>
+        <Col xs={11} sm={6} md={6} className="text-center">
+          <Form className="p-3 border border-danger rounded" noValidate validated={validated} onSubmit={handleUnregister}>
+            <Form.Label className="mb-3 text-center text-danger">Dangerous Area</Form.Label>
+            <br />
             <Button variant="danger" type="submit">
               Unregister
             </Button>
