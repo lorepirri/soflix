@@ -96,7 +96,10 @@ export function Header(props) {
   } else if (path === DIRECTOR_PATH ) {
     navTitle = director.Name;
   } else if (path === PROFILE_PATH ) {
-    navTitle = `Profile of ${user}`;
+    if (user) {
+      // when a user unregisters, 'user' is null for a moment
+      navTitle = `Profile of ${user}`;
+    }
     isUserAction = true;
   } else if (path === '/' ) {
     isHome = true;
