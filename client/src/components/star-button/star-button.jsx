@@ -21,10 +21,11 @@ export function StarButton(props) {
     movieId &&
       <a href="#"
         onClick={(e) => { e.preventDefault(); onToggleFavourite(movieId);} }
+        {...rest}
       >
         <FontAwesomeIcon 
           icon={icon}
-          {...rest} className="text-warning" />
+          className="text-warning" />
       </a>
   );
 }

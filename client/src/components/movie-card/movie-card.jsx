@@ -28,7 +28,7 @@ export class MovieCard extends React.Component {
                 movieId={movie._id}
                 isFavorite={isFavorite}
                 onToggleFavourite={movieId => onToggleFavourite(movieId)}
-                className="ml-2 ml-sm-4" />
+                className="ml-2" />
             }            
           </Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{movie.Genre.Name}</Card.Subtitle>
