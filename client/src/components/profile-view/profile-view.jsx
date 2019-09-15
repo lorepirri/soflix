@@ -19,7 +19,6 @@ export function ProfileView(props) {
   if (!userProfile) {
     return null;
   }
-
   
   const { user, onToggleFavourite } = props;
 
@@ -68,6 +67,9 @@ export function ProfileView(props) {
       event.stopPropagation();
     } else {
       console.log('user update', username, 'with password', password);
+      // const url_root = 'http://localhost:3000'
+      const url_root = 'https://soflix.herokuapp.com'
+      const register_url = `${url_root}/users/${username}`;
 
       let options = {}
       if (token) {
@@ -113,6 +115,9 @@ export function ProfileView(props) {
     }
 
     console.log('unregister user', username);
+    // const url_root = 'http://localhost:3000'
+    const url_root = 'https://soflix.herokuapp.com'
+    const unregister_url = `${url_root}/users/${username}`;
 
     let options = {}
     if (token) {

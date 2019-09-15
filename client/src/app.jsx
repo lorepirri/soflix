@@ -77,8 +77,8 @@ class App extends React.Component {
   }
 
   getMovies(token) {
-    const url_root = 'http://localhost:3000'
-    // const url_root = 'https://soflix.herokuapp.com'
+    // const url_root = 'http://localhost:3000'
+    const url_root = 'https://soflix.herokuapp.com'
     const movies_url = `${url_root}/movies`;
     let options = {}
     if (token) {
@@ -153,8 +153,8 @@ class App extends React.Component {
 
     console.log('toggle favorite movie', movieId, 'for user', username);
     
-    const url_root = 'http://localhost:3000'
-    // const url_root = 'https://soflix.herokuapp.com'
+    //const url_root = 'http://localhost:3000'
+    const url_root = 'https://soflix.herokuapp.com'
     const favorite_movie_url = `${url_root}/users/${username}/${movieId}`;
 
     let options = {

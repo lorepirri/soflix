@@ -26,7 +26,9 @@ export function LoginView(props) {
     } else {
       console.log('new login', username, 'with password', password);
       // send a request to the server for authentication
-      const login_url = 'https://soflix.herokuapp.com/login';
+      // const url_root = 'http://localhost:3000'
+      const url_root = 'https://soflix.herokuapp.com'
+      const login_url = `${url_root}/login`;
       axios.post(login_url, {
         Username: username,
         Password: password

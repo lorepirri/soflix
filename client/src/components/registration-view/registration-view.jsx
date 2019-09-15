@@ -48,8 +48,9 @@ export function RegistrationView(props) {
       event.stopPropagation();
     } else {
       console.log('new registration', username, 'with password', password);
-
-      const register_url = 'https://soflix.herokuapp.com/users';
+      // const url_root = 'http://localhost:3000'
+      const url_root = 'https://soflix.herokuapp.com'
+      const register_url = `${url_root}/users`;
       axios.post(register_url, {
         Name: name,
         Username: username,
