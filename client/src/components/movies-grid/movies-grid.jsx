@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 // import app components
 import { MovieCard } from '../movie-card/movie-card';
 
+// imports for files to bundle
+import './movies-grid.scss';
 
 export function MoviesGrid(props) {
   
