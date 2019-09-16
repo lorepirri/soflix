@@ -79,30 +79,38 @@ export function Header(props) {
   let isFavorite = false;
 
   // check if user is logged in
-  if (path === LOGIN_PATH ) {
-    // a log in was requested
-    navTitle = 'Log in to SoFlix';
-    isUserAction = true;
-  } else if (path === REGISTRATION_PATH ) {
-    // a sign up was requested
-    navTitle = 'Register to SoFlix';
-    isUserAction = true;
-  } else if (path === GENRE_PATH ) {
-    navTitle = genre.Name;
-  } else if (path === MOVIE_PATH ) {
-    isMovie = true;
-    isFavorite = user && userProfile.FavoriteMovies.includes(movie._id);
-    navTitle = movie.Title;
-  } else if (path === DIRECTOR_PATH ) {
-    navTitle = director.Name;
-  } else if (path === PROFILE_PATH ) {
-    if (user) {
-      // when a user unregisters, 'user' is null for a moment
-      navTitle = `Profile of ${user}`;
-    }
-    isUserAction = true;
-  } else if (path === '/' ) {
-    isHome = true;
+  switch (path) {
+    case LOGIN_PATH:
+      // a log in was requested
+      navTitle = 'Log in to SoFlix';
+      isUserAction = true;
+      break; 
+    case REGISTRATION_PATH:
+      // a sign up was requested
+      navTitle = 'Register to SoFlix';
+      isUserAction = true;      
+      break; 
+    case GENRE_PATH:
+      navTitle = genre.Name;
+      break; 
+    case MOVIE_PATH:
+      isMovie = true;
+      isFavorite = user && userProfile.FavoriteMovies.includes(movie._id);
+      navTitle = movie.Title;
+      break; 
+    case DIRECTOR_PATH:
+      navTitle = director.Name;
+      break; 
+    case PROFILE_PATH:
+      if (user) {
+        // when a user unregisters, 'user' is null for a moment
+        navTitle = `Profile of ${user}`;
+      }
+      isUserAction = true;      
+      break; 
+    case '/':
+      isHome = true;
+      break;                             
   }
 
   showActionPanel = !isUserAction && isReady;
