@@ -20,7 +20,7 @@ import Container from 'react-bootstrap/Container';
 
 // import app components
 import { Header } from './components/header/header';
-import { MainView } from './components/main-view/main-view';
+import MainView from './components/main-view/main-view';
 import { LoginView } from './components/login-view/login-view';
 import { RegistrationView } from './components/registration-view/registration-view';
 import { MovieView } from './components/movie-view/movie-view';

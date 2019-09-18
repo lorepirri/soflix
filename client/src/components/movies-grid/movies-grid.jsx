@@ -12,8 +12,9 @@ export function MoviesGrid(props) {
   const { movies, title, user, userProfile, onToggleFavourite } = props;
 
   return (
-    (movies && (movies.length > 0)) &&
-    (<React.Fragment>
+    movies.length === 0
+    ? <div className="text-center">no movies found</div>
+    :(<React.Fragment>
       {title && (<React.Fragment><h5>{title}</h5><br /></React.Fragment>)}
       <div className="movies-grid card-deck">
           {movies.map(movie => (
