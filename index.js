@@ -9,6 +9,8 @@ require('dotenv').config();
 const passport = require('passport');
 require('./passport');
 
+const path = require('path');
+
 var port = process.env.PORT || 3000;
 
 const cors = require('cors');
@@ -49,11 +51,19 @@ app.use(morgan('common'));
 // routes all requests for static files to 'public' folder
 app.use(express.static('public'));
 
+// routes all requests for the client to 'dist' folder
+app.use('/client', express.static(path.join(__dirname, 'dist')));
+
 app.use(bodyParser.json());
 
 // Routes //
 
 // No authentication routes
+
+// all routes to the React client
+app.get('/client/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 // Add index routes to middleware chain.
 app.use('/login', authRouter);
