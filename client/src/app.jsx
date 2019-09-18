@@ -195,7 +195,7 @@ class App extends React.Component {
       return (<DefaultLayout component={MainView} onLoggedIn={onLoggedIn} onToggleFavourite={onToggleFavourite} />);
     }
     return (
-      <Router history={history}>
+      <Router basename="/client" history={history}>
         <Switch>
           <Route
             path="/movies/:movieId"
