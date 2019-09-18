@@ -1,5 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+import moviesApp from './reducers/reducers';
+const store = createStore(moviesApp);
 
 // imports for files to bundle
 import './index.scss';
@@ -9,7 +14,11 @@ import App from './app.jsx';
 // main component
 class SoFlixApplication extends React.Component {
   render() {
-    return (<App /> );
+    return (
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
   }
 }
 

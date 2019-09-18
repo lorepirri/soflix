@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 
 import axios from 'axios';
 
+import { connect } from 'react-redux';
+import { setMovies } from './actions/actions';
+
 import { Route, Switch } from 'react-router-dom';
 import { Router } from "react-router";
 import { createBrowserHistory } from "history";
@@ -53,8 +56,7 @@ class App extends React.Component {
     super();
 
     // init an empty state
-    this.state = { 
-      movies: null,
+    this.state = {
       user: null,
       userProfile: null,
       token: null
@@ -89,9 +91,7 @@ class App extends React.Component {
     axios.get(movies_url, options)
       .then( res => {
         // update the state
-        this.setState({
-          movies: res.data
-        })
+        this.props.setMovies(res.data);
       })
       .catch( err => {
         console.error(err);
@@ -179,7 +179,8 @@ class App extends React.Component {
   }
 
   render() {
-    const { user, userProfile, movies, token } = this.state;
+    let { movies } = this.props;
+    const { user, userProfile, token } = this.state;
     
     // the log in / log out function
     const onLoggedIn = user => this.onLoggedIn(user);
@@ -223,7 +224,11 @@ class App extends React.Component {
   }
 }
 
-export default App;
+let mapStateToProps = state => {
+  return { movies: state.movies };
+}
+
+export default connect(mapStateToProps, {setMovies})(App);
 
 DefaultLayout.propTypes = {
   onLoggedIn: PropTypes.func.isRequired
