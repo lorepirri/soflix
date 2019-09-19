@@ -8,9 +8,10 @@ import { connect } from 'react-redux';
 import { setMovies } from './actions/actions';
 
 import { Route, Switch } from 'react-router-dom';
-import { Router } from "react-router";
-import { createBrowserHistory } from "history";
-const history = createBrowserHistory(); 
+// import { Router } from "react-router";
+import { BrowserRouter as Router } from "react-router";
+// import { createBrowserHistory } from "history";
+// const history = createBrowserHistory(); 
 
 // imports for files to bundle
 import './app.scss';
@@ -195,7 +196,7 @@ class App extends React.Component {
       return (<DefaultLayout component={MainView} onLoggedIn={onLoggedIn} onToggleFavourite={onToggleFavourite} />);
     }
     return (
-      <Router basename="/client" history={history}>
+      <Router basename="/client">
         <Switch>
           <Route
             path="/movies/:movieId"
