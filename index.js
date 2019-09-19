@@ -52,7 +52,11 @@ app.use(morgan('common'));
 app.use(express.static('public'));
 
 // routes all requests for the client to 'dist' folder
-app.use('/client', express.static(path.join(__dirname, 'dist')));
+app.use('/client', express.static(path.join(__dirname, 'client/dist')));
+// all routes to the React client
+app.get('/client/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 app.use(bodyParser.json());
 
@@ -60,10 +64,7 @@ app.use(bodyParser.json());
 
 // No authentication routes
 
-// all routes to the React client
-app.get('/client/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
+
 
 // Add index routes to middleware chain.
 app.use('/login', authRouter);
