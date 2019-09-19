@@ -52,10 +52,10 @@ app.use(morgan('common'));
 app.use(express.static('public'));
 
 // routes all requests for the client to 'dist' folder
-app.use('/client', express.static(path.join(__dirname, 'dist')));
+app.use('/client', express.static(path.join(__dirname, 'client/dist')));
 // all routes to the React client
 app.get('/client/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
 });
 
 app.use(bodyParser.json());
