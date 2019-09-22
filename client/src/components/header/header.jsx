@@ -172,7 +172,7 @@ Header.propTypes = {
     Password: PropTypes.string,
     Email: PropTypes.string,
     Birthday: PropTypes.string
-  }).isRequired,
+  }),
   movie: PropTypes.object,
   onLoggedIn: PropTypes.func.isRequired,
   onToggleFavourite: PropTypes.func.isRequired

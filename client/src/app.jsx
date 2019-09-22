@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import { connect } from 'react-redux';
-import { setMovies } from './actions/actions';
+import { setMovies, setUser } from './actions/actions';
 
 import { Route, Switch } from 'react-router-dom';
 // import { Router } from "react-router";
@@ -58,7 +58,6 @@ class App extends React.Component {
 
     // init an empty state
     this.state = {
-      userProfile: null,
       token: null
     };
   }
@@ -70,9 +69,9 @@ class App extends React.Component {
       let userProfileString = localStorage.getItem('user-profile');
       let userProfile = JSON.parse(userProfileString);
       this.setState({
-        userProfile,
         token: accessToken
       });
+      this.props.setUser(userProfile);
     }
     this.getMovies(accessToken);
   }
@@ -105,6 +104,11 @@ class App extends React.Component {
       token = authData.token;
     }
 
+    this.props.setUser(userProfile);
+    this.setState({
+      token
+    });
+
     if (userProfile) {
       localStorage.setItem('token', authData.token);
       localStorage.setItem('user-profile', JSON.stringify(authData.user));
@@ -114,20 +118,13 @@ class App extends React.Component {
       localStorage.removeItem('user-profile');
     }
 
-    this.setState({
-      userProfile,
-      token
-    });
-
     window.open('/', '_self');
   }
 
   onUserUpdate(userProfile, goHome=true) {
     if (userProfile) {
       localStorage.setItem('user-profile', JSON.stringify(userProfile));
-      this.setState({
-        userProfile
-      });
+      this.props.setUser(userProfile);
       if (goHome) {
         window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
       }
@@ -135,8 +132,8 @@ class App extends React.Component {
   }
 
   onToggleFavourite (movieId) {
-    
-    const { userProfile, token } = this.state;
+    const { userProfile } = this.props;
+    const { token } = this.state;
     if (!token) {
       // if token is not present, user is not logged in, go home
       console.log('user is not logged in');
@@ -174,8 +171,8 @@ class App extends React.Component {
   }
 
   render() {
-    let { movies } = this.props;
-    const { userProfile, token } = this.state;
+    const { movies, userProfile } = this.props;
+    const { token } = this.state;
     
     // the log in / log out function
     const onLoggedIn = authData => this.onLoggedIn(authData);
@@ -221,10 +218,13 @@ class App extends React.Component {
 }
 
 let mapStateToProps = state => {
-  return { movies: state.movies };
+  return { 
+    movies: state.movies,
+    userProfile: state.userProfile
+   };
 }
 
-export default connect(mapStateToProps, {setMovies})(App);
+export default connect(mapStateToProps, {setMovies, setUser})(App);
 
 DefaultLayout.propTypes = {
   onLoggedIn: PropTypes.func.isRequired
