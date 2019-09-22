@@ -11,16 +11,13 @@ import { setFilter } from '../../actions/actions';
 
 function VisibilityFilterInput(props) {
   return (
-  <Row>
-    <Col xs={12} sm={4}>
-      <Form.Control
-        className="mb-5"
-        onChange={e => props.setFilter(e.target.value)}
-        value={props.visibilityFilter}
-        placeholder="filter"
-      />
-    </Col>
-  </Row>);
+    <Form.Control 
+      className="mb-3"
+      onChange={e => props.setFilter(e.target.value)}
+      value={props.visibilityFilter}
+      placeholder="filter"
+    />
+  );
 }
 
 export default connect( null, { setFilter })(VisibilityFilterInput);

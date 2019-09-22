@@ -10,6 +10,7 @@ import Spinner from 'react-bootstrap/Spinner';
 // import app components
 import { MoviesGrid } from '../movies-grid/movies-grid';
 import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-input';
+import SortFilterDropdown from '../sort-filter-dropdown/sort-filter-dropdown';
 
 function NoMovies(props) {
   return (
@@ -27,12 +28,21 @@ function NoMovies(props) {
 
 export function MainView(props) {
   
-  const { movies, userProfile, onToggleFavourite, visibilityFilter } = props;
-  
+  const { movies, userProfile, onToggleFavourite } = props;
+  const { visibilityFilter, sortFilter } = props;
+  // shallow copy
+  let filteredMovies = [...movies];
   // filter movies according to a specified filter
-  let filteredMovies = movies;
   if (visibilityFilter !== '') {
     filteredMovies = movies.filter(m => m.Title.toLowerCase().includes(visibilityFilter.toLowerCase()));
+  }
+  // sort movies according to the sort filter
+  switch (sortFilter) {
+    case 'Movie Title':
+      filteredMovies.sort((a, b) => (a.Title > b.Title) ? 1 : -1)
+      break;
+    default:
+      break;
   }
 
   return (
@@ -40,7 +50,14 @@ export function MainView(props) {
       ? <NoMovies />
       : (
         <div className="main-view">
-          <VisibilityFilterInput visibilityFilter={visibilityFilter} />
+          <Row className="mb-3">
+            <Col xs={12} sm={4}>
+              <VisibilityFilterInput visibilityFilter={visibilityFilter} />
+            </Col>
+            <Col xs={12} sm={4}>
+              <SortFilterDropdown sortFilter={sortFilter} />
+            </Col>
+          </Row>          
           {filteredMovies.length === 0
           ? <div className="text-center">no movies found</div>
           : (
@@ -56,8 +73,8 @@ export function MainView(props) {
 }
 
 const mapStateToProps = state => {
-  const { visibilityFilter } = state;
-  return { visibilityFilter };
+  const { visibilityFilter, sortFilter } = state;
+  return { visibilityFilter, sortFilter };
 };
 
 export default connect(mapStateToProps)(MainView);
