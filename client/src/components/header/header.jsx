@@ -122,7 +122,7 @@ export function Header(props) {
         {!isHome
           ?
           <React.Fragment>
-          <a href="#" onClick={(e) => {window.open('/', '_self'); /*props.history.goBack();*/ e.preventDefault();}}>
+          <a href="#" onClick={(e) => {window.open('/client', '_self'); /*props.history.goBack();*/ e.preventDefault();}}>
           <FontAwesomeIcon 
             icon={faChevronLeft}
             className="mr-2 mr-sm-4"

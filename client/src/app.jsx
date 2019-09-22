@@ -118,7 +118,7 @@ class App extends React.Component {
       localStorage.removeItem('user-profile');
     }
 
-    window.open('/', '_self');
+    window.open('/client', '_self');
   }
 
   onUserUpdate(userProfile, goHome=true) {
@@ -126,7 +126,7 @@ class App extends React.Component {
       localStorage.setItem('user-profile', JSON.stringify(userProfile));
       this.props.setUser(userProfile);
       if (goHome) {
-        window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+        window.open('/client', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
       }
     }
   }
@@ -137,7 +137,7 @@ class App extends React.Component {
     if (!token) {
       // if token is not present, user is not logged in, go home
       console.log('user is not logged in');
-      window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+      window.open('/client', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
       return;
     }
 
