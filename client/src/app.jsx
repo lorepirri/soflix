@@ -9,7 +9,7 @@ import { setMovies } from './actions/actions';
 
 import { Route, Switch } from 'react-router-dom';
 // import { Router } from "react-router";
-import { BrowserRouter as Router } from "react-router";
+import { BrowserRouter as Router } from 'react-router-dom';
 // import { createBrowserHistory } from "history";
 // const history = createBrowserHistory(); 
 
