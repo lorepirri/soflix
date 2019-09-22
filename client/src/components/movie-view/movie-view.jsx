@@ -25,10 +25,6 @@ export const MovieView = (props) => {
           <h5>Director:&nbsp;
             <Link to={`/directors/${movie.Director.Name}`}>{movie.Director.Name}</Link>
           </h5>
-
-
-
-
           <br />
           <h5>Description</h5>
           <p>{movie.Description}</p>

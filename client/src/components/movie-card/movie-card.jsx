@@ -12,7 +12,7 @@ const MAX_CHARS_IN_A_DESCRIPTION = 100;
 
 export class MovieCard extends React.Component {
   render() {
-    const { movie, user, isFavorite, onToggleFavourite } = this.props;
+    const { movie, userProfile, isFavorite, onToggleFavourite } = this.props;
     let movieDescription = movie.Description;
     if (movieDescription.length > MAX_CHARS_IN_A_DESCRIPTION) {
       movieDescription = `${movieDescription.substring(0, MAX_CHARS_IN_A_DESCRIPTION)}...`;
@@ -23,7 +23,7 @@ export class MovieCard extends React.Component {
         <Card.Body>
           <Card.Title>
             {movie.Title}
-            {user &&
+            {userProfile &&
               <StarButton
                 movieId={movie._id}
                 isFavorite={isFavorite}

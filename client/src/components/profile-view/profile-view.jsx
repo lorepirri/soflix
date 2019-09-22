@@ -20,7 +20,7 @@ export function ProfileView(props) {
     return null;
   }
   
-  const { user, onToggleFavourite } = props;
+  const { onToggleFavourite } = props;
 
   const [ name, setName ] = useState(userProfile.Name);
   const [ username, setUsername ] = useState(userProfile.Username);
@@ -167,7 +167,6 @@ export function ProfileView(props) {
         movies={movies}
         title="My favourite movies"
         onToggleFavourite={movieId => onToggleFavourite(movieId)}
-        user={user}
         userProfile={userProfile}
       />
     </div>

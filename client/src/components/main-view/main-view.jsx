@@ -27,13 +27,15 @@ function NoMovies(props) {
 
 export function MainView(props) {
   
-  const { movies, user, userProfile, onToggleFavourite, visibilityFilter } = props;
-
+  const { movies, userProfile, onToggleFavourite, visibilityFilter } = props;
+  
   // filter movies according to a specified filter
   let filteredMovies = movies;
   if (visibilityFilter !== '') {
     filteredMovies = movies.filter(m => m.Title.toLowerCase().includes(visibilityFilter.toLowerCase()));
   }
+
+  
 
   return (
       movies.length === 0
@@ -44,7 +46,6 @@ export function MainView(props) {
           <MoviesGrid 
             movies={filteredMovies}
             onToggleFavourite={movieId => onToggleFavourite(movieId)}
-            user={user}
             userProfile={userProfile}
           />
         </div>

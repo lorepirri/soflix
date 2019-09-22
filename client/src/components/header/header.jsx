@@ -42,11 +42,11 @@ function ActionPanelNoUser(props) {
 }
 
 function ActionPanelUser(props) {
-  const { user, onLoggedIn } = props;
+  const { userProfile, onLoggedIn } = props;
   return (
     <Form inline className="my-4 my-sm-0 d-flex justify-content-center justify-content-sm-end">
       <Navbar.Text>
-        Signed in as: <Link to={PROFILE_PATH}>{user}</Link>
+        Signed in as: <Link to={PROFILE_PATH}>{userProfile.Username}</Link>
       </Navbar.Text>        
       <Button 
         variant="outline-primary" 
@@ -58,13 +58,14 @@ function ActionPanelUser(props) {
 
 
 export function Header(props) {
+
   // vars
-  const { match, movie, genre, user, director, onLoggedIn } = props;
-  const { userProfile, onToggleFavourite } = props;
+  const { match, movie, genre, userProfile, director } = props;
+  const { onLoggedIn, onToggleFavourite } = props;
   // if not inside a Route, force path to '/'
   const { path } = match || { path: '/'};
   // check if movies are loaded, if any of these, then not
-  let isReady = !(!match && !movie && !user);
+  let isReady = !(!match && !movie && !userProfile);
   // shows the action panel or not (log in / log out buttons)
   let showActionPanel = true;
   // registration, login, or profile view, do no need action panel
@@ -95,16 +96,16 @@ export function Header(props) {
       break; 
     case MOVIE_PATH:
       isMovie = true;
-      isFavorite = user && userProfile.FavoriteMovies.includes(movie._id);
+      isFavorite = userProfile && userProfile.FavoriteMovies.includes(movie._id);
       navTitle = movie.Title;
       break; 
     case DIRECTOR_PATH:
       navTitle = director.Name;
       break; 
     case PROFILE_PATH:
-      if (user) {
+      if (userProfile) {
         // when a user unregisters, 'user' is null for a moment
-        navTitle = `Profile of ${user}`;
+        navTitle = `Profile of ${userProfile.Username}`;
       }
       isUserAction = true;      
       break; 
@@ -141,7 +142,7 @@ export function Header(props) {
           <Navbar.Toggle aria-controls="responsive-navbar-nav"></Navbar.Toggle>
           <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            {(isMovie && user) &&
+            {(isMovie && userProfile) &&
               <StarButton 
                 movieId={movie._id}
                 isFavorite={isFavorite}
@@ -149,8 +150,8 @@ export function Header(props) {
                 className="ml-2 ml-sm-4" />
             }
           </Nav>
-          {user 
-            ? <ActionPanelUser user={user} onLoggedIn={user => onLoggedIn(user)} />
+          {userProfile 
+            ? <ActionPanelUser userProfile={userProfile} onLoggedIn={authData => onLoggedIn(authData)} />
             : <ActionPanelNoUser />
           }
           </Navbar.Collapse>
@@ -163,7 +164,15 @@ export function Header(props) {
 };
 
 Header.propTypes = {
-  user: PropTypes.string,
+  userProfile: PropTypes.shape({
+    _id: PropTypes.string,
+    FavoriteMovies: PropTypes.array,
+    Name: PropTypes.string,
+    Username: PropTypes.string,
+    Password: PropTypes.string,
+    Email: PropTypes.string,
+    Birthday: PropTypes.string
+  }).isRequired,
   movie: PropTypes.object,
   onLoggedIn: PropTypes.func.isRequired,
   onToggleFavourite: PropTypes.func.isRequired
@@ -173,6 +182,6 @@ ActionPanelNoUser.propTypes = {
 };
 
 ActionPanelUser.propTypes = {
-  user: PropTypes.string.isRequired,
+  userProfile: PropTypes.object.isRequired,
   onLoggedIn: PropTypes.func.isRequired
 };

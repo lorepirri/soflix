@@ -9,7 +9,7 @@ import './movies-grid.scss';
 
 export function MoviesGrid(props) {
   
-  const { movies, title, user, userProfile, onToggleFavourite } = props;
+  const { movies, title, userProfile, onToggleFavourite } = props;
 
   return (
     movies.length === 0
@@ -22,8 +22,8 @@ export function MoviesGrid(props) {
             key={movie._id}
             movie={movie}
             onToggleFavourite={movieId => onToggleFavourite(movieId)}
-            isFavorite={user && userProfile && userProfile.FavoriteMovies.includes(movie._id)}
-            user={user}
+            isFavorite={userProfile && userProfile.FavoriteMovies.includes(movie._id)}
+            userProfile={userProfile}
           />
           ))}
         </div>

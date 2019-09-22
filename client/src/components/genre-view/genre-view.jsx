@@ -13,7 +13,7 @@ import './genre-view.scss';
 
 
 export const GenreView = (props) => {
-  const { genre, movies, user, userProfile, onToggleFavourite } = props;
+  const { genre, movies, userProfile, onToggleFavourite } = props;
   if (!genre) return null;
   return (
     <div className="genre-view">
@@ -30,7 +30,6 @@ export const GenreView = (props) => {
         movies={movies}
         title="Some movies that belong to this Genre"
         onToggleFavourite={movieId => onToggleFavourite(movieId)}
-        user={user}
         userProfile={userProfile}
       />
     </div>

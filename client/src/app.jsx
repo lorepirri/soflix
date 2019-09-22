@@ -58,7 +58,6 @@ class App extends React.Component {
 
     // init an empty state
     this.state = {
-      user: null,
       userProfile: null,
       token: null
     };
@@ -71,7 +70,6 @@ class App extends React.Component {
       let userProfileString = localStorage.getItem('user-profile');
       let userProfile = JSON.parse(userProfileString);
       this.setState({
-        user: localStorage.getItem('user'),
         userProfile,
         token: accessToken
       });
@@ -100,28 +98,23 @@ class App extends React.Component {
   }
 
   onLoggedIn(authData) {
-    let user = null;
     let userProfile = null;
     let token = null;
     if (authData) {
-      user = authData.user.Username;
       userProfile = authData.user;
       token = authData.token;
     }
 
-    if (user) {
+    if (userProfile) {
       localStorage.setItem('token', authData.token);
-      localStorage.setItem('user', authData.user.Username);
       localStorage.setItem('user-profile', JSON.stringify(authData.user));
       this.getMovies(authData.token);
     } else {
       localStorage.removeItem('token');
-      localStorage.removeItem('user');
       localStorage.removeItem('user-profile');
     }
 
     this.setState({
-      user,
       userProfile,
       token
     });
@@ -143,14 +136,15 @@ class App extends React.Component {
 
   onToggleFavourite (movieId) {
     
-    const { user: username, userProfile, token } = this.state;
-
+    const { userProfile, token } = this.state;
     if (!token) {
       // if token is not present, user is not logged in, go home
       console.log('user is not logged in');
       window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
       return;
     }
+
+    const username = userProfile.Username;
 
     console.log('toggle favorite movie', movieId, 'for user', username);
     
@@ -181,20 +175,21 @@ class App extends React.Component {
 
   render() {
     let { movies } = this.props;
-    const { user, userProfile, token } = this.state;
+    const { userProfile, token } = this.state;
     
     // the log in / log out function
-    const onLoggedIn = user => this.onLoggedIn(user);
+    const onLoggedIn = authData => this.onLoggedIn(authData);
     // toggle star/unstar function
     const onToggleFavourite= movieId => this.onToggleFavourite(movieId);
 
     // these are propagated through all the routes
-    const routeProps = { user, token, onLoggedIn, userProfile, onToggleFavourite };
+    const routeProps = { token, onLoggedIn, userProfile, onToggleFavourite };
 
     // if movies are not yet loaded, return a spinner
     if (!movies) {
       return (<DefaultLayout component={MainView} onLoggedIn={onLoggedIn} onToggleFavourite={onToggleFavourite} />);
     }
+
     return (
       <Router basename="/client">
         <Switch>
