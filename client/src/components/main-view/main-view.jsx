@@ -35,19 +35,21 @@ export function MainView(props) {
     filteredMovies = movies.filter(m => m.Title.toLowerCase().includes(visibilityFilter.toLowerCase()));
   }
 
-  
-
   return (
       movies.length === 0
       ? <NoMovies />
       : (
         <div className="main-view">
           <VisibilityFilterInput visibilityFilter={visibilityFilter} />
-          <MoviesGrid 
-            movies={filteredMovies}
-            onToggleFavourite={movieId => onToggleFavourite(movieId)}
-            userProfile={userProfile}
-          />
+          {filteredMovies.length === 0
+          ? <div className="text-center">no movies found</div>
+          : (
+            <MoviesGrid 
+              movies={filteredMovies}
+              onToggleFavourite={movieId => onToggleFavourite(movieId)}
+              userProfile={userProfile}
+            />
+          )}
         </div>
         )
   );

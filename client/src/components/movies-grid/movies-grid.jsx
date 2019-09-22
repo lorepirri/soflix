@@ -13,7 +13,7 @@ export function MoviesGrid(props) {
 
   return (
     movies.length === 0
-    ? <div className="text-center">no movies found</div>
+    ? <React.Fragment></React.Fragment>
     :(<React.Fragment>
       {title && (<React.Fragment><h5>{title}</h5><br /></React.Fragment>)}
       <div className="movies-grid card-deck">
