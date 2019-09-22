@@ -153,20 +153,37 @@ class App extends React.Component {
       headers: { Authorization: `Bearer ${token}`}
     };
     let axiosAction = (url, options) => axios.post(url, null, options);
-    if (userProfile.FavoriteMovies.includes(movieId)) {
+
+    // deep copy of the user profile (used to preview the change)
+    const newTempUserProfile = JSON.parse(JSON.stringify(userProfile));
+
+    let favoriteMovieIndex = userProfile.FavoriteMovies.indexOf(movieId);
+    if (favoriteMovieIndex === -1) {
+      console.log('add to favorites.');
+      // update the change for faster feedback
+      // add to the temporary profile
+      newTempUserProfile.FavoriteMovies.push(movieId);
+    } else {
       axiosAction = axios.delete;
       console.log('remove from favorites.');
-    } else {
-      console.log('add to favorites.');
+      // update the change for faster feedback
+      // remove it to the temporary profile
+      newTempUserProfile.FavoriteMovies.splice(favoriteMovieIndex, 1);
     }
+
+    // update the change for faster feedback
+    this.onUserUpdate(newTempUserProfile, false);
 
     axiosAction(favorite_movie_url, options)
     .then(response => {
       const newUserProfile = response.data;
+      // consolidate the change
       this.onUserUpdate(newUserProfile, false);
     })
     .catch(e => {
       console.log('error toggling the movie as favorite:', e)
+      // revert the change
+      this.onUserUpdate(userProfile, false);
     });      
   }
 
